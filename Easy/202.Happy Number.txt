@@ -1,0 +1,25 @@
+class Solution {
+    public boolean isHappy(int n)
+    {
+	//hashset is used to detect loops
+        HashSet<Integer> visited = new HashSet<>();
+        while(n != 1)
+        {
+            int val = n;
+            int total = 0;
+            while(val !=  0)
+            {
+                total += (val % 10) * (val %10);
+                val /= 10;
+            }
+	    //if we have seen the sum of squares already, we are in a loop and we exit
+            if(visited.contains(total))
+             return false;    
+            visited.add(total);
+            n = total;
+        }
+        return true;
+        
+        
+    }
+}

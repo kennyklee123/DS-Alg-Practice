@@ -1,0 +1,34 @@
+class Solution {
+    public String frequencySort(String s)
+    {
+        
+      if(s == null) return null;
+
+        if(s.length() == 0) return s;
+        
+        //Capture the character -> count map
+        HashMap<Character,Integer> charCount = new HashMap<>();
+        for(char charRead: s.toCharArray())
+            charCount.put(charRead, charCount.getOrDefault(charRead,0)+1);
+
+        //Make a priority queue and insert the entry set by building a max heap
+        final Set<Map.Entry<Character,Integer>> entrySet = charCount.entrySet();
+        PriorityQueue<Map.Entry<Character, Integer>> pq = new PriorityQueue<>(charCount.size(),
+                (freq1, freq2) -> freq2.getValue() - freq1.getValue());
+        pq.addAll(entrySet);
+
+        //Add it to the result in the decreasing order of frequency
+        StringBuilder result = new StringBuilder();
+        int count=0;
+        Map.Entry<Character,Integer> entry = null;
+        while(!pq.isEmpty()) {
+            entry = pq.poll();
+			
+			//Add the characters until their frequency is exhausted
+            while(count++<entry.getValue())
+                result.append(entry.getKey());
+            count=0;
+        }
+        return result.toString();
+    }
+}

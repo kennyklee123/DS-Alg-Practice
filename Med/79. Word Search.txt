@@ -1,0 +1,46 @@
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        
+        /*RUN TIME O(n) where n is the number of cells in the board
+          Space Complexity: O(N) we modify the board in place and we have recursive calls, worse case is if the                 entire board is the word we are looking for
+        */
+        //go through every row and for every row, check every column 
+        for( int i = 0; i <board.length; i++){
+            for(int j = 0; j<board[i].length; j++){
+//if the index we are at contains the 1st letter of the word & we can find the remainder of the word from that index
+                if(board[i][j] == word.charAt(0) && dfs(board, i, j, 0, word))
+                    return true;
+            }
+        }
+        return false;    
+    }
+    //int i and j are the row and column we are at, count is the # of letters we have found
+    public boolean dfs(char[][] board, int i, int j , int count, String word)
+    {
+        //if we found the remainder of the word, the count = length of the word
+        if(count == word.length())
+            return true;
+        
+        //check to see we havent left the grid and checks that the cell we are at contains the letter we want
+        //we check to see if its in the grid because of how set our found below
+        //i>= board.length means that we just left our grid or we are far from it 
+        //EX the length of the board is 6 but that means we only go up to index 5, if i >= 6 we are out of the grid
+        if( i >= board.length || i <0 || j >= board[0].length || j < 0 || board[i][j] != word.charAt(count))
+            return false;
+        //if we get here, we haven't found the remainder of the word, we are still inbounds of the grid and the character we are looking for we just found, so we continue our recursion
+        
+        // we can not use the same letter cell more than once so we save it and see the cell to empty
+        char temp = board[i][j];
+        board[i][j] = ' ';
+        
+        //continue recursion and check all 4 places you can move too
+        //check south, north, east, west
+        boolean found = dfs(board, i+1, j, count+1, word) 
+                            || dfs(board, i-1, j, count+1, word )
+                            || dfs(board, i, j + 1 , count+1, word)
+                            || dfs(board, i, j - 1, count+1, word);
+        //after the recursive calls we have to restore the letters we set to emtpy
+        board[i][j] = temp;
+        return found;//returns true or false if we found the remainder of the board
+    }
+}

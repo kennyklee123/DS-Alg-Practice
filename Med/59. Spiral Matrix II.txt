@@ -1,0 +1,106 @@
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] res = new int[n][n];
+        int topRow = 0;
+        int bottomRow = n-1;
+        int leftCol = 0;
+        int rightCol = n-1; //follow same concept as spiral matrix 1
+        int dir = 0;
+        int value = 1;
+        
+        while(topRow <= bottomRow && leftCol <= rightCol)
+        {
+            
+            //going left to right on the top row
+            if(dir == 0)
+            {
+             for(int i = leftCol;i<=rightCol;i++)
+             {
+                 res[topRow][i] = value++; 
+              }
+                topRow++;
+                dir = 1;
+            }
+            //going from top right to bottom right, in the right column
+            else if(dir == 1){
+                
+                for(int i = topRow;i<=bottomRow;i++){
+                    res[i][rightCol] = value;
+                    value++;
+                }
+                rightCol--;
+                dir = 2;
+            }
+            //going from bottom right to bottom left in the bottom row
+            else if(dir == 2)
+            {
+                for(int i = rightCol;i>=leftCol;i--){
+                    res[bottomRow][i] = value;
+                    value++;
+                }
+                bottomRow--;
+                dir = 3;
+            }
+            //going from bottom left to top left in the left column
+            else if(dir == 3)
+            {
+                //
+                for(int i = bottomRow;i>=topRow;i--){
+                    res[i][leftCol] = value;
+                    value++;
+                }
+                leftCol++;
+                dir = 0;
+            }
+        }
+        return res;
+    }
+}
+/*
+
+//old spiral doesnt work
+    int[][] res = new int[n][n];
+        int top = 0;
+        int bottom = n-1;
+        int right = n-1;
+        int left = 0;
+        int count = 1;
+        
+        while(count < n*n)
+        {
+            //going throw a row
+            //going from left to right at the top row
+            //this completes the top row hence why we increment it at teh end
+            
+            for(int i = left; i <= right && count <  n*n; i++){
+                res[top][i] = count++;
+                
+            }
+            top++;
+
+            //going through a column
+            //top right to bottom right
+            for(int j = top; j <= bottom && count <  n*n; j++){
+                res[j][right] = count++;
+            }
+            right--;
+            //going through a row
+           
+            //bottom right to bottom left
+            for(int i = right; i >= left && count <  n*n; i--){
+                res[bottom][i] = count++;
+            }
+            bottom--;
+            
+            //bottom left to as far as we can top lefT?
+            //we are going up a column
+            for(int j = bottom; j>=top && count <  n*n; j--)
+            {
+                res[j][left] = count++;
+            }
+            
+            left++;
+                
+        }
+        return res;
+        */

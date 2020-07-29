@@ -1,0 +1,17 @@
+class Solution {
+    public int maxProfit(int[] prices)
+    {
+         int min = Integer.MAX_VALUE, max = 0;
+        
+         for (int i = 0; i < prices.length; i++) 
+         {
+             //we do this because we dont care about what happens to the old stocks we bought
+             //min is the stock we "buy"
+             min = Math.min(min, prices[i]);
+             //max is when we sell it hence we do the max of the (old profit, new profit)
+             max = Math.max(max, prices[i] - min);
+         }
+        
+         return max;
+ }  
+}

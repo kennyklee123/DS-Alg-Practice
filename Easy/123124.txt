@@ -1,0 +1,204 @@
+public class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> res = new ArrayList<>();
+        
+        for (int i = 0; i < words.length; i++) {
+            int len = 0;
+            List<String> mid = new ArrayList<>();
+            while (i < words.length && 
+                    (len+mid.size()+words[i].length()) <= maxWidth) {
+                mid.add(words[i]); len += words[i].length(); ++i;
+            }
+            if (i == words.length || mid.size() <= 1) {
+                // last line or one String line
+                StringBuilder line = new StringBuilder();
+                for (int k = 0; k < mid.size()-1; k++) {
+                    line.append(mid.get(k)); line.append(' ');
+                }
+                line.append(mid.get(mid.size()-1));
+                int space = maxWidth-line.length();
+                for (int k = 0; k < space; k++)
+                    line.append(' ');
+                
+                res.add(line.toString());
+                if (i != words.length)
+                    continue;
+                else
+                    break;
+            } else {
+                // lines
+                StringBuilder line = new StringBuilder();
+                int space = (maxWidth-len)/(mid.size()-1);
+                int evenl = (maxWidth-len)%(mid.size()-1);
+                for (int k = 0; k < mid.size()-1; k++) {
+                    line.append(mid.get(k));
+                    for (int h = 0; h < space; h++) line.append(' ');
+                    if (evenl > 0) { line.append(' '); --evenl; }
+                }
+                line.append(mid.get(mid.size()-1));
+                res.add(line.toString());
+            }
+            --i;
+        }
+
+
+
+public class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> res = new ArrayList<>();
+        
+        for (int i = 0; i < words.length; i++) 
+{
+            int len = 0;
+            List<String> mid = new ArrayList<>();
+            while (i < words.length && 
+                    (len+mid.size()+words[i].length()) <= maxWidth)
+ 		{
+                mid.add(words[i]); len += words[i].length(); ++i;
+            }
+            if (i == words.length || mid.size() <= 1) {
+                // last line or one String line
+                StringBuilder line = new StringBuilder();
+                for (int k = 0; k < mid.size()-1; k++) {
+                    line.append(mid.get(k)); line.append(' ');
+                }
+                line.append(mid.get(mid.size()-1));
+                int space = maxWidth-line.length();
+                for (int k = 0; k < space; k++)
+                    line.append(' ');
+                
+                res.add(line.toString());
+                if (i == words.length)
+                    break;
+                else
+                    break;
+            } else {
+                // lines
+                StringBuilder line = new StringBuilder();
+                int space = (maxWidth-len)/(mid.size()-1);
+                int evenl = (maxWidth-len)%(mid.size()-1);
+                for (int k = 0; k < mid.size()-1; k++) {
+                    line.append(mid.get(k));
+                    for (int h = 0; h < space; h++) line.append(' ');
+                    if (evenl > 0) { line.append(' '); --evenl; }
+                }
+                line.append(mid.get(mid.size()-1));
+                res.add(line.toString());
+            }
+            --i;
+        }
+        
+        return res;
+    }
+}
+
+ public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> res = new ArrayList<>();
+        
+        for (int i = 0; i < words.length; i++) {
+            int len = 0;
+            List<String> mid = new ArrayList<>();
+            while (i < words.length && 
+                    (len+mid.size()+words[i].length()) <= maxWidth) {
+                mid.add(words[i]); len += words[i].length(); ++i;
+            }
+            if (i == words.length || mid.size() <= 1) {
+                // last line or one String line
+                StringBuilder line = new StringBuilder();
+                for (int k = 0; k < mid.size()-1; k++) {
+                    line.append(mid.get(k)); line.append(' ');
+                }
+                line.append(mid.get(mid.size()-1));
+                int space = maxWidth-line.length();
+                for (int k = 0; k < space; k++) line.append(' ');
+                res.add(line.toString());
+                if (i == words.length) break;
+            } else {
+                // lines
+                StringBuilder line = new StringBuilder();
+                int space = (maxWidth-len)/(mid.size()-1);
+                int evenl = (maxWidth-len)%(mid.size()-1);
+                for (int k = 0; k < mid.size()-1; k++) {
+                    line.append(mid.get(k));
+                    for (int h = 0; h < space; h++) line.append(' ');
+                    if (evenl > 0) { line.append(' '); --evenl; }
+                }
+                line.append(mid.get(mid.size()-1));
+                res.add(line.toString());
+            }
+            --i;
+        }
+        
+        return res;
+    }
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> result = new ArrayList<String>();
+        
+        /*calculate start word and end word that can go in one sentence*/
+        for(int i=0; i<words.length;) {
+            int startWordIndex = i;
+            int len = 0;
+            while(len < maxWidth) {
+                if(i<words.length && words[i].length() <=  maxWidth - len) {
+                    len += words[i].length() + 1; // +1 is for mandatory space between words
+                    i++;
+                } else {
+                    break;
+                }
+            }
+            int endWordIndex = i-1;
+            
+            /*len-1 because space after end word should be deleted*/
+            result.add(lineBuilder(words, startWordIndex, endWordIndex, len-1, maxWidth));
+        }
+        
+        return result;
+    }
+    
+    public String lineBuilder(String[] words, int startWordIndex, int endWordIndex, int len, int maxWidth) {
+        
+        int extraSpaces = maxWidth - len;
+        StringBuilder line = new StringBuilder();
+        
+        /*this is for last sentence*/
+        if(endWordIndex == words.length-1) {
+            while(startWordIndex <= endWordIndex) {
+                line.append(words[startWordIndex]);
+                if(startWordIndex != endWordIndex) line.append(" ");
+                else {
+                    while(extraSpaces > 0) {
+                        line.append(" ");
+                        extraSpaces--;
+                    }
+                }
+                startWordIndex++;
+            } 
+        } else {
+            while(startWordIndex <= endWordIndex)
+            {
+                line.append(words[startWordIndex]); 
+                if(startWordIndex != endWordIndex) line.append(" ");
+                
+                /*calulate holes and spaces remaining to put */
+                int h = (endWordIndex-startWordIndex); 
+                int newh = h==0 ? 1 : h;  /*h=0 when there is exactly one word*/
+                int spaces =  extraSpaces / newh;
+                
+                if(spaces == 0) spaces = 1;  /*when extraspaces < number of holes*/
+                else if((extraSpaces % newh) != 0) spaces+=1; /*when extraspaces > number of holes but not exactly divisible*/
+                                
+                while(spaces>0 && extraSpaces > 0){
+                    line.append(" ");
+                    spaces--;
+                    extraSpaces--;
+                }
+                
+                startWordIndex++;
+            }
+            
+        }        
+        return line.toString();
+    }
+}
+}

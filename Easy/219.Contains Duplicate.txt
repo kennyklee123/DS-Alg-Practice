@@ -1,0 +1,29 @@
+class Solution 
+{
+    public boolean containsNearbyDuplicate(int[] nums, int k) 
+    {
+        HashMap <Integer, Integer> distinctIndices = new HashMap<>();
+        
+        //key is the integer itself
+        //value is the index
+        //.get gets the value mapped by a particular key
+        
+        for(int i = 0; i<nums.length ; i++)
+        {
+            //if the hashmap already contains the integer, that means there is a duplicate
+            if(distinctIndices.containsKey(nums[i]))
+            {                
+                //nums[i] is the # itself, so doing .get(#) gives you the key it is mapped too
+                // which would be the index of where it was first added to the map
+                //this if statement is the condition where the index i - j has to be <= given # k
+                if(Math.abs(i-distinctIndices.get(nums[i]))<= k)
+                {
+                    return true;
+                }
+            }
+            //key value, key holds the # itself, value is the index
+            distinctIndices.put(nums[i], i);
+        }
+        return false;
+    }
+}

@@ -1,0 +1,18 @@
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int index = 0;
+        //walk through the array 1by 1 to keep an index where to place a variable where its not a zero
+        //then fill the rest of the array with zeroes since we know where it isn't a zero
+        for(int i = 0; i <nums.length; i++)
+        {
+            if(nums[i] != 0)
+                nums[index++] = nums[i];//we place the number that is not zero at the index we are at         
+        }
+        //fill them in here
+        for(int i = index; i < nums.length; i++)
+        {
+             nums[i] = 0;
+        }
+           
+    }
+}

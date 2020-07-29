@@ -1,0 +1,61 @@
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) 
+    {
+          
+         if(matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+             return new ArrayList();
+         }
+        List<Integer> result = new ArrayList<Integer>();      
+        int m = matrix.length; //m is the rows
+        int n = matrix[0].length; //n is the columns
+        int top = 0; //top row you start withre
+        int bottom = m- 1; // bottom right since arrays  index at 0 we have to do -1 to start at the last element
+        int left = 0; //left col
+        int right = n-1;// right col; -1 due ot the indexing
+        
+        //while we have no elements remaining
+        while(result.size() < m *n)
+        {
+            
+            //we need 4 for loops to go from row to column
+            //use J for columns, i for rows
+            //LEFT to RIGHT in the top row
+            //we use left and not 0 because left will start to shrink towards the middle as we progress
+            //this would be going 1,2,3
+            for(int j = left; j <= right && result.size()< m*n; j++)
+            {
+                result.add(matrix[top][j]);
+            }
+            top++;  //increment row because we just finished traversing this row since we left to right
+            
+            
+            //TOP RIGHT TO BOTTOM RIGHT
+            //you are in the right column at the top right and go down to the bottom right
+            //we are going from the first row(The top) down to the bottom row in the right column
+            for(int i = top; i <= bottom && result.size() <  m*n; i++)
+            {
+                result.add(matrix[i][right]);
+            }
+            right--;//decrement the right column since you just travertsed it
+            
+            //BOTTOM RIGHT TO BOTTOM LEFT
+            //going from bottom right to bottom left
+            for(int j = right; j>= left && result.size() < m*n; j--)
+            {
+                result.add(matrix[bottom][j]);
+            }
+            bottom--;//decrement the bottom row since you just went across it
+            
+            
+            //BOTTOM LEFT TO WHEREVER TOP IS
+            //going from bottom right to the the top row we can reach
+            for(int i = bottom; i >= top && result.size() < m*n; i--)
+            {
+                result.add(matrix[i][left]);
+            }
+            left++;//we increment the left columm 
+        }
+        return result;
+        
+    }
+}

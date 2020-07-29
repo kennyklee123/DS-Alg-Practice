@@ -1,0 +1,19 @@
+class Solution {
+    public int balancedStringSplit(String s)
+    {
+        //when we see a L we +1 when we see a R we -1
+        //when the count goes to 0 we know we have substring with the same # of L and R
+        int count = 0, res = 0;
+        for ( int i =0 ; i <s.length(); i++)
+        {
+            if(s.charAt(i) == 'L')
+                count++;
+            else
+                count--;
+            if(count == 0)
+                res++;
+        }
+        return res;
+    }
+}
+

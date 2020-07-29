@@ -1,0 +1,44 @@
+class Solution {
+    public String[] findRestaurant(String[] list1, String[] list2) {
+        
+        //WORDING OF THIS PROBLEM IS WEIRD with the least list index sum
+        // the least list index sum means the least sum of the index in list 1 and list 2 where 
+        //list1[i] == list2[j] meaning, that its the same restraunt name
+        
+    
+        Map<String, Integer> map = new HashMap<>();
+        List<String> res = new LinkedList<>();
+        
+        //this is used to keep track of the sum of the indices where both lsits contain the same string
+        int minSum = Integer.MAX_VALUE;
+        
+        //fill the hashmap with the values in the first linkedlist
+        //key is the name, value is the index its found at
+        for (int i=0;i<list1.length;i++) 
+            map.put(list1[i], i);
+        
+        //now we check for intersection of a restraunt name
+        for (int i=0;i<list2.length;i++) 
+        {
+            //get the value of that word, which would be the index of where it was seen in the first list
+            Integer j = map.get(list2[i]);
+            //if the value of j is null, that means that the two linked list do not have that string in common, so you would skip to the next iteration of the for loop
+            //we also check that this itteration's index sum is <= the minmum sum so far
+            if (j != null && i + j <= minSum)
+            {
+                //check to see if this itteration's sum is only < minSum
+               if (i + j < minSum) { 
+                  //we clear out our result with the common interest and updated our minmum sum so far
+                   //THE CLEAR FUNCTION MAY NEED TO BE REPLACED BY INITALIZING RES AGAIN BECAUSE CLEARING is 0(n) and if we have a large n, its a time sink
+                   res.clear();
+                   minSum = i+j; 
+               }
+               //if this itteration's index sum is BOTH EITHER <= minSum, we add the string at this value to our result array
+               res.add(list2[i]);
+            }
+        }
+        //turn the Arraylist into a String
+        return res.toArray(new String[res.size()]);
+    }
+}
+

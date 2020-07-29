@@ -1,0 +1,49 @@
+class Solution {
+  public boolean backspaceCompare(String S, String T) {
+        if(S == T)
+            return true;
+        if(S == null || T == null)
+            return false;
+        
+        int i = S.length() - 1;
+        int j = T.length() - 1;
+        
+        while(true) {            
+            i = stepBack(S, i);
+			// i now points to either valid char S or -1 if finished iterating through S
+			
+            j = stepBack(T, j);
+			// j now points to either valid char T or -1 if finished iterating through T
+            
+			// finished both strings
+            if(i == -1 && j == -1)
+                return true;
+
+			// finished only one string
+            if(i == -1 || j == -1)
+                return false;
+            
+			// 
+            if(S.charAt(i) != T.charAt(j))
+                return false;
+
+            i--;
+            j--;
+        }
+    }
+    
+    int stepBack(String s, int i) {
+        int backspace = 0;
+        while(i >= 0) {
+            if(s.charAt(i) == '#')
+                backspace++; // backspace: next non-# char will be skipped
+            else if(backspace > 0)
+                backspace--; // skipping backspaced non-# char
+            else
+                break; // legit char from the string
+            i--;
+        }
+        
+        return i;
+    }
+}

@@ -1,0 +1,52 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+ /*
+    O(n) runtime because we have to traverse through all the nodes, where n is the total nmumber of nodes in our tree
+    Space: O(n) because our recursive stack can go as deep as the height of tree which is the entire tree
+*/
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> paths = new ArrayList<>();
+        if( root == null)
+            return paths; 
+    //root is needed, a string that represents the current path for every recursive call, and paths array list so we can add onto it
+    //this is our shell function
+        dfs(root, "", paths);
+        return paths;
+    }
+    
+
+   //if we reach this recursive function, we definitively have a node,1st thing to think about is base case
+    public void dfs(TreeNode root, String path, List<String> paths)
+    {
+        // 1st we will be at the root of the tree and need the roots value
+        path += root.val;
+        
+        //This base case checks for a leaf node, since we have a leaf node we have a path
+        if(root.left == null && root.right == null){
+            //add the path and then return because we have no more children to traverse
+            paths.add(path);
+            return;
+        }
+        //if we aren't at a leaf node, we have to traverse the left and or right child
+        //traverse left child
+        if(root.left != null)
+            dfs(root.left, path + "->", paths);
+        //traverse right child
+        if(root.right != null)
+            dfs(root.right, path + "->", paths);
+    }
+}

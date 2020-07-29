@@ -1,0 +1,64 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+//OPTIMIZED VERSION
+//https://leetcode.com/problems/intersection-of-two-linked-lists/discuss/49785/Java-solution-without-knowing-the-difference-in-len!
+/*
+It took me a while to understand why this worked, but I think I got it!
+
+It works because pointer A walks through List A and List B (since once it hits null, it goes to List B's head).
+Pointer B also walks through List B and List A.
+Regardless of the length of the two lists, the sum of the lengths are the same (i.e. a+b = b+a), which means that the pointers sync up at the point of intersection.
+
+If the lists never intersected, it's fine too, because they'll sync up at the end of each list, both of which are null.
+*/
+public class Solution{
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    //boundary check
+        if(headA == null || headB == null) return null;
+
+        ListNode a = headA;
+        ListNode b = headB;
+
+        //if a & b have different len, then we will stop the loop after second iteration
+        while( a != b){
+            //for the end of first iteration, we just reset the pointer to the head of another linkedlist
+            a = a == null? headB : a.next;
+            b = b == null? headA : b.next;    
+        }
+
+        return a;
+    }
+}
+
+
+
+/*idea is to run through the first list, put it in a hashset, then run through the second and check if the node in List B is in A, if it is then its an intersection
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB)
+    {
+        Set<ListNode> visited = new HashSet<>();
+        while(headA != null)
+        {
+            visited .add(headA);
+            headA = headA.next;
+        }
+        while(headB != null){
+            if(visited .contains(headB))
+                return headB;
+            headB = headB.next;
+        }
+        return null;
+
+        
+    }
+}
+*/

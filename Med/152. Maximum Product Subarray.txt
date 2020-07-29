@@ -1,0 +1,25 @@
+class Solution {
+    public int maxProduct(int[] nums) {
+        
+    /*create currMax or currMin for storing max or min and create nextMax for storing multiply
+    the current value with previous max and nextMin similar for min and compare these nextMax,nextMin with current value and find which is max or min till this and return max.
+    */
+      int max=nums[0];
+      int currMax=nums[0];
+      int currMin=nums[0];
+      //keeping track of min is needed for negatives!
+      for(int i=1;i<nums.length;i++)  
+      {
+         int nextMax=currMax * nums[i];
+         int nextMin=currMin * nums[i];
+
+         currMax=Math.max(nums[i], Math.max(nextMax,nextMin));
+         currMin=Math.min(nums[i], Math.min(nextMax,nextMin));
+
+         max=Math.max(currMax,max); 
+      }
+
+      return max;  
+    }
+    
+}
