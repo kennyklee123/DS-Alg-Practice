@@ -1,0 +1,74 @@
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        /* GREEDY Approach ish
+        Priority queue( because we always want to take the most frequent task we can process,
+        so if the 1st freq is unavaible, take the next(you would think max heap for the largest/most of something)
+        
+        1st thing use a hashmap to get the count
+        2 put it in a max heap or priority queue
+        */
+        
+        HashMap<Character, Integer> map = new HashMap<>();
+        for(char c : tasks)
+
+            map.put(c, map.getOrDefault(c,0) + 1);
+        
+    //the comparison says put the max number at the top of the heap the b-a part
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a,b) -> b-a);
+        maxHeap.addAll(map.values());
+        
+        int cycles = 0; //least number of units of times the cpu will take
+        //now we use the max heap to determine when we are done processing, when its emtpy we are done
+        //while its not empty we try to process the most frequest task we can
+        
+        while(!maxHeap.isEmpty()){
+            //we store all the process we are able to run into the temp
+            List<Integer> temp = new ArrayList<>(); 
+            //we iterate through the cooldown process and try to keep on taking tasks
+        //n+1 is the cooldown interval, if the cd is 10 seconds, we make sure we waited all 10 seconds not 9
+       
+            for(int i = 0; i < n+1; i++)  
+            {
+                //take the current root of the heap and we run that task
+                if(!maxHeap.isEmpty()){
+                    temp.add(maxHeap.remove()); //.remove takes it out of the heap
+                }
+            } 
+            
+            for(int i : temp){ //this loop is used to reduce the count of what we used above, by 1
+                
+                if(--i > 0){ //this takes the count, EX 5 and adds it back into the queue as 4
+                    maxHeap.add(i);  /
+                 }
+            }
+            
+            //idea is that if we can just terminate as we just finished off the rest of the tasks, we want to increment the cycle by the # of processes we just ran to finish off the tasks
+            //else, every other time we get stuck with the cooldown and or ran tasks throughout the whole cycle 
+            cycles += maxHeap.isEmpty() ? temp.size() : n + 1;         
+        }
+        return cycles;
+    }
+}
+
+/* OTHER APPROACH
+
+    int[] char_map = new int[26];
+    for(char c: tasks) //this for loops counts how the occurances of a single character
+        char_map[c-'A']++;  EX if c is A, A-A = 0 so it would be at char_Map[0]
+    int mostFreq = char_map[25] - 1; //substract one  because for the last task executed,we dont need to wait n intervals of time.
+    
+    //we consider every spot between the mostFreq tasks as an idle period
+    //EX A _ _  A _ _ A, the _ are spots we have to wait between the most freq task, dictated by n
+    int idleSlots = mostFreq * n;
+    
+    for(int i = 24; i >=0; i--){
+        //math.min is needed due to the fact that we took the most frequent task and subtracted 1, since the lask task does not need to wait n intervals of time
+        //it is possible that the most freq task will be less than the element in char_map[24], so if we subtract [24]'s value, we might be subtracting one idle spot that we didn't take into account of in the first place
+        //so we either take the smallest of the mostFreq count-1 or we the counts of other characters at char_map[i]
+        idleSlots -= Math.min(char_map[i], mostFreq)
+    }
+    
+  //this basically says if we used up all our slots, return the number of tasks we processed
+  // else return task.length + however many idles we actually had to use
+    return idleSlots > 0 ? task.length: task.length+idleSlots;
+*/

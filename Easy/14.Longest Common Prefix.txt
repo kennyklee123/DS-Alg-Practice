@@ -1,0 +1,51 @@
+class Solution {
+    public String longestCommonPrefix(String[] strs)
+    {
+        if (strs == null) 
+            return null;
+        if (strs.length == 0)
+            return "";
+
+        Arrays.sort(strs); 0(nlogn) 
+        //IDEA: take the smallest string and the largest string and get the minmum length between the two
+        char[] first = strs[0].toCharArray();
+        char[] last  = strs[strs.length - 1].toCharArray();
+        //i is used to hold the index of where the longest common prefix ends between the two strings
+        int i = 0, len = Math.min(first.length, last.length);
+        
+        //We then itterate through this loop as long as we havent surpassed the length of the smallest string 
+        //and that the characters of the two strings are equal to each other
+        while (i < len && first[i] == last[i])
+            i++;
+        //we return the longest common prefix here which would be created using the smallest substring
+        //the substring is from the first character up to the index of the last character in our common prefix
+        return strs[0].substring(0, i);
+        
+    }
+}
+/*
+Brute force
+ String lcp = "";
+        if(strs.length ==0)
+            return lcp;
+        //index is used to keep track  of the index of the character we are currently at
+        int index =0;
+        //iterate throguh the characters in the first string 
+        for(char a : strs[0].toCharArray())
+        {
+            //loop through the array to check if every string contains the character we are on
+            for(int i = 1; i<strs.length;i++)
+            {
+                //index is out of bounds and if the character at index is not the same
+                //index is used to optimize our runtime as if the index > the length of the string, we are done finding the longest prefix
+                if(index >= strs[i].length() || a != strs[i].charAt(index))
+                   return lcp;
+            }
+            //if its not returned in the if loop above, all strings contain that character 
+            //so add that character to our lcp and increment our index
+            lcp += a;
+            index++;
+                  
+        }
+       return lcp;   
+       */

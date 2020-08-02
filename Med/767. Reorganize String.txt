@@ -1,0 +1,52 @@
+class Solution {
+    /* IDEA
+    We want to greedly choose the most frequent characters to use first, since theres a restriction on how they are placed
+    Use a hashmap to get count the #s of each character, char is the key, their count is the value
+    use a stringbuilder to build a string
+    use a maxHeap to get the most freqeunt characters
+    use a while loop to greedily take the most frequent characters, add them to the string, decrement the number of times we can use those characters and putting them back into the heap as necessary
+    */
+    public String reorganizeString(String S) {
+        
+        HashMap<Character,Integer> counts = new HashMap<>();
+        for(char c : S.toCharArray())
+            counts.put(c, counts.getOrDefault(c,0) + 1);
+                    
+        //we want two elements, and the -> tells the heap how to compare those elements
+        //we want a maxHeap with that orders elemnts by  however many times a character has occured
+        PriorityQueue<Character>  maxHeap = new PriorityQueue((a,b) -> counts.get(b) - counts.get(a));
+        maxHeap.addAll(counts.keySet());//populate the queue with the keys(Characters)
+        
+        //what we are trying to do is take the most frequent occuring char, put it in the stirng followed by the next most frequently occuring char after it, rinse and repeat to buold the string
+        
+                       
+        StringBuilder result = new StringBuilder();        
+        while(maxHeap.size() > 1)
+        {  
+            //get 2 different chars append them to our string,
+           // and put them back into the heap if their count is still > 1
+        //this is the greedy part where we are trying to take the most frequent characters  
+             char current = maxHeap.remove();
+             char next = maxHeap.remove();
+             result.append(current); //add the characters that occour a lot greedly
+             result.append(next);
+            //now we decrement the count of two characters we just used now by 1
+             counts.put(current, counts.get(current)-1);
+             counts.put(next, counts.get(next) -1);
+            //now check if their counts are greater than 0, if so add them back to the heap
+            if(counts.get(current) >0)
+                maxHeap.add(current);
+            if(counts.get(next) > 0)
+                maxHeap.add(next);
+        }
+        // if we have one character left in our heap and its count > 1,
+        //we return false since we have nothing else to split that character with
+        if(!maxHeap.isEmpty()){
+            char last = maxHeap.remove();
+            if(counts.get(last) > 1)
+                return "";
+            result.append(last);
+        }
+        return result.toString();
+    }
+}
