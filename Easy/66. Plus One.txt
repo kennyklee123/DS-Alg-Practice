@@ -1,0 +1,33 @@
+class Solution {
+    public int[] plusOne(int[] digits)
+    {
+
+        int carry = 0;
+        /* 
+            the idea is that we loop through the array starting from the back and we handle two cases
+            if the arr[i] < 9 we just increment arr[1] by 1 and we just return the array and are done
+            if we dont enter this for loop, the digit is a 9 so we set it to 0 and go to the next iteration
+            
+            
+            if we do not return at all using the for loop we had a number with all 9s so we just extend the array 
+            and make the arr[0] = 1, since we know when we initalize an array, its filled with 0s
+        */
+        
+        for(int i = digits.length-1; i >= 0; i--){
+            //case where we can just increment the number and return
+            if(digits[i] < 9){
+                digits[i]++;
+                return digits;
+            }
+            //if we reach here, we have seen a number that ends with a 9
+            digits[i] = 0; 
+        }
+        
+        
+        System.out.println(digits);
+        //if we 
+        int[] res = new int[digits.length+1];
+        res[0] = 1;
+        return res;
+    }
+}

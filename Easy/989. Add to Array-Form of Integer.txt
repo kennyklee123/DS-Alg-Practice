@@ -1,0 +1,21 @@
+class Solution {
+    public List<Integer> addToArrayForm(int[] A, int K) {
+        //using a linkedlist is faster than an arraylist
+        
+        LinkedList<Integer> ans = new LinkedList<>();
+         // loop through A and K, from right to left.
+        //we decrement i every iteration and divide k by 10 every iteration, EX 430 -> 43-> 4, etc
+        for (int i = A.length - 1; K > 0 || i >= 0; --i, K /= 10) {
+                     
+            // Use K as carry over, and add A[i] to it
+            K += i >= 0 ? A[i] : 0; 
+            
+            //offer first puts the element at the front of the list, which is what we want so we do not have to reverse the list
+            //Ex of modulus 12 % 10 = 2
+            ans.offerFirst(K % 10); // add the least significant digit of K.
+        }
+        return ans;
+    
+    }
+}
+

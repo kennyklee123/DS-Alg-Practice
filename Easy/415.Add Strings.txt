@@ -1,0 +1,20 @@
+public class Solution {
+    public String addStrings(String num1, String num2)
+    {
+        StringBuilder sb = new StringBuilder();
+        int carry = 0;
+        //we loop through while either i or j still has numbers to add, or the carry is equal to 1
+        //the reason why we add in carry is for an example like 11+89, where the two strings are size 2, but their result is size 3
+        for(int i = num1.length() - 1, j = num2.length() - 1; i >= 0 || j >= 0 || carry == 1; i--, j--){
+            
+            //if either i or j < 0, that means we already went through their string and dont add anything
+            int x = i < 0 ? 0 : num1.charAt(i) - '0';  
+            int y = j < 0 ? 0 : num2.charAt(j) - '0'; 
+            //we append the sum of the index we are currently at now
+            sb.append((x + y + carry) % 10);//EX 5+ 7+ 1= 13 %10 =3, its just like normal adding
+            carry = (x + y + carry) / 10;//we calculate our carry here for the next iteration
+        }
+        //we have to revese the string because we built the string from adding right to left like normal people do
+        return sb.reverse().toString();
+    }
+}
