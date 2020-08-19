@@ -1,0 +1,46 @@
+**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    
+    /*
+    I use long to avoid the case where if he used integer, it fails when it is either integer.max_value or integer.min_value. 
+    If I used ints, when calling isValidBST it would look like this instead
+    return isValidBST(root, null, null);  
+    */
+   public boolean isValidBST(TreeNode root) {
+       
+        return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+    
+    //idea is that we want to return true when its null, because that means that we the leaf nodes all checked out with their values and did not return false, which means it is a BST
+    public boolean isValidBST(TreeNode root, long minVal, long maxVal) {
+        //this means that the parent of this node is a leaf node, and if the parent passed the if check below, then we return true and bubble it up the recursive calls
+        if (root == null) 
+            return true;
+        //this if loops checks if the node follows the BST rules
+        if (root.val >= maxVal || root.val <= minVal)
+            return false;
+        //we call the search on the left and right children
+        
+        
+        //we recursively call our function here for the left and right children
+        //we have to set their parameters differently to fit the BST rules
+        //the minVal stays the same for the left child and the maxVal stays the same for the right child, as they are global min/maxs if you think about it
+        //for the left subtree of a node, they all most be less than the node
+        //the right subtree of a node, they all most be greater than the node
+        return isValidBST(root.left, minVal, root.val) && isValidBST(root.right, root.val, maxVal);
+    }
+}

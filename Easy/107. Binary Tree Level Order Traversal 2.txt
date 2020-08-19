@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        
+        //We used a linked list here or else the time run time would be insane as an arraylist would force you to shift a lot of times
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        List<List<Integer>> wrapList = new LinkedList<List<Integer>>();
+        
+        if(root == null)
+            return wrapList;
+        int levelNum = 0;
+        queue.offer(root);
+        //bfs until we are done with all nodes
+        while(!queue.isEmpty()){
+            //we get the # of nodes in this level 
+           levelNum = queue.size();
+            List<Integer> subList = new LinkedList<Integer>();
+            //loop through our current level
+            for(int i=0; i<levelNum; i++) {
+            //check if the node we are on has kids, if it does add them to the queue
+                if(queue.peek().left != null) 
+                    queue.offer(queue.peek().left);
+                if(queue.peek().right != null)
+                    queue.offer(queue.peek().right);
+                //add the node to the current level
+                subList.add(queue.poll().val);
+            }
+            //add the current level to the list of levels
+            //the 0 makes us always add to the first index, so this will shift everything to the right
+            //always adding to the first index of the linked list will give us to the bottem up level
+            //order 
+            wrapList.add(0, subList);
+        }
+        return wrapList;
+    }
+}

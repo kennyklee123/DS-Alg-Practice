@@ -1,0 +1,90 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+class Solution {
+    //Method 1: use HashMap
+//1. build a undirected graph using treenodes as vertices, and the parent-child relation as edges
+//2. do BFS with source vertice (target) to find all vertices with distance K to it.
+    
+    Map<TreeNode, List<TreeNode>> map = new HashMap();
+//here can also use Map<TreeNode, TreeNode> to only store the child - parent mapping, since parent-child mapping is inherent in the tree structure
+    
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+        //this holds the nodes distance k from our target
+         List<Integer> res = new ArrayList<Integer> ();
+        //base case if there is no node or they want us to go a negative level(not possible)
+        if (root == null || K < 0)
+            return res;
+        //build the undirected graph with our root node
+        //null is passed in as it doesnt have a parent
+        buildMap(root, null); 
+        //this means that the target is not even in the tree so we don't actually search
+        if (!map.containsKey(target))
+            return res;
+        
+        //whatever we add into our queue, we also mark as visited so it does not get re added into it
+        Set<TreeNode> visited = new HashSet<TreeNode>();
+        
+        //we set up the BFS begninnig at the target node
+        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        q.add(target);
+        visited.add(target); 
+        
+        while (!q.isEmpty()) {
+            //this is used so that we only itterate on our current level
+            int size = q.size();
+            //if K == 0  everything in the queue currently are the nodes distance k in the binary tree
+            if (K == 0) {
+                for (int i = 0; i < size ; i++) 
+                    res.add(q.poll().val);
+                return res;
+            }
+            //this process in the nodes in our current level and adds the nodes connected to our current nodes
+            for (int i = 0; i < size; i++) {
+                TreeNode node = q.poll();
+                //given the node in our current level, we add the nodes that it is connected with to our queue
+                for (TreeNode next : map.get(node))
+                {
+                    //if we have visited that node before, we do not add it back into the queue
+                    if (visited.contains(next))
+                        continue;
+                    //we have not visited this node before so now we add it to our queue and visited list
+                    visited.add(next);
+                    q.add(next);
+                }
+            }
+            //after processing this level, we reduce the distance we have to search by 1
+            K--;
+        }
+        //if we hit this return statement, we did not find any nodes k distance away from our target, so we just return an empty list
+        return res;
+    }
+    
+    // we use a hashmap to create the undirected graph that lets us have parent-child relation as edges
+    //every key is the node we are on and its value is its parent(if it has a parent)
+    private void buildMap(TreeNode node, TreeNode parent) 
+    {
+        if (node == null) 
+            return;
+        //if our map doesnt contain that node we have to build the undirected graph fo ir
+        if (!map.containsKey(node)) {
+            map.put(node, new ArrayList<TreeNode>());
+            //check if the node has a parent
+            if (parent != null)  {
+                //link the node and its parent together
+                map.get(node).add(parent); 
+                map.get(parent).add(node) ;
+            }
+            //recursive calls to link the children to the parent
+            buildMap(node.left, node);
+            buildMap(node.right, node);
+        }
+    }    
+}

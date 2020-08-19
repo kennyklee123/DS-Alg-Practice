@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution
+{
+    public boolean isSymmetric(TreeNode root)
+    {
+        //if the root is null it is symmetric
+        return root == null ? true : recursion(root.left, root.right);
+    }
+    public boolean recursion(TreeNode t1, TreeNode t2)
+    {
+        //base cases
+        //if we reach the point where its only null, we stop recursively calling as that means that node's parent is a leaf node 
+        if(t1==null && t2==null) 
+            return true;
+        //if either of them are null and the other isn't it isn't symmetrical
+        if(t1==null || t2==null)
+            return false;
+        //now we check their values as there are two nodes to compare
+        if(t1.val != t2.val) 
+            return false;
+        //reccursively call here, we pair the left and rights with the opposites to check symmetry
+        //the left subtree's left node should be the same as the right sub trees'right node, the inner nodes of both subtrees should be the same
+        return recursion(t1.left, t2.right) && recursion(t1.right, t2.left);
+    }
+}

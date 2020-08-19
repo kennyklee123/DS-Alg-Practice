@@ -1,0 +1,90 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+   /*
+    BST is sorted array. Same elements are grouped together. Therefore in order traverse is the same as traversing through the sorted array.
+    */
+    Integer prev = null;
+    int count = 1;//when we see a  nodes it count is  1
+    int max =0; //max node frequency
+    
+    public int[] findMode(TreeNode root) {
+        if(root == null) return new int[0];
+        //list of modes
+        List<Integer> list = new ArrayList<>();
+
+
+        traverse(root, list);
+        
+        
+        //fill in our modes here with this for loops
+        int[] res = new int[list.size()];
+        
+        for(int i = 0; i < list.size(); i++) {
+            res[i] = list.get(i);
+        }
+        
+        return res;
+    }
+    
+    //recursive inorder traversal 
+    //right gets compared the last
+    //how it works is that it starts with left and root comparisons
+    //then then it checks the right node and if there is a left node for that node, it will compare it to the right node's root
+    private void traverse(TreeNode node, List<Integer> list )
+    {
+        if(node == null)
+            return;
+        //left
+        traverse(node.left, list);
+        
+        
+        //LEFT AND ROOT COMPARISON
+        //compare the prev node with the current node, prev starts out as null so we have an iff check
+        if(prev != null){
+            
+            if(prev == node.val){
+                count++;
+            }
+            //if they are not the same value, we set the count to 1 because if they are different in value, we just reset the count
+            //we only count when they are the samee nodes
+            else {
+                count = 1;
+            }
+            
+        }
+        
+        //if a count of a number is > max, it is the new mode
+        if (count > max){
+            max = count;   //set the new max to this count
+            list.clear();  //clear all the old modes
+            list.add(node.val);// add the new mode
+        }
+        else if( count == max){
+            list.add(node.val); //we found a mode with the same # of frequency as the other modes
+        }
+        
+        prev = node.val;
+        
+        
+        //right
+        traverse(node.right, list);
+        
+    }
+    
+   
+    
+}

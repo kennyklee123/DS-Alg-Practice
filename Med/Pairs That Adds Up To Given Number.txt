@@ -1,0 +1,71 @@
+Pair That Adds Up To Given Number MEDIUM
+Given an array of integers and a sum, find a pair that adds up to the sum given.
+So, the time complexity of the worst-case is O(N * C), where N is the number of elements in the array and C is a constant, or simple O(N).
+
+The worst-case space comlexity is constant as there is no extra space declared in the algorithm.
+
+
+NON SORTED BASICALLY JSUT TWO SUM
+  public String getPair(int[] A, int sum) {
+
+        // null check for array
+        if (A == null) {
+            return "()";
+        }
+
+        for (int i = 0; i < A.length - 1; i++) {
+            for (int j = i + 1; j < A.length; j++) {
+
+                if (A[i] + A[j] == sum) {
+                    return "(" + i + ", " + j + ")";
+                }
+
+            }
+        }
+
+        // if we reach here, that means we could not find any pair which adds up to given sum
+        return "()";
+    }
+}
+
+THIS IS IF ITS SORTED
+
+Time Complexity  : O(N)     // linear time complexity
+Space Complexity : O(1)     // linear space complexity
+
+
+    public String getPair(int[] A, int sum) {
+
+        // null check for array
+        if (A == null) {
+            return "()";
+        }
+
+        int left = 0;
+        int right = A.length - 1;
+
+        while (left < right) {
+            int currentSum = A[left] + A[right];
+
+            if (currentSum > sum) {
+                // if the sum of left and right elements is more than the given sum,
+                // we need to decrease the currentSum
+                right--;
+
+            } else if (currentSum < sum) {
+                // if the sum of left and right elements is less than the given sum,
+                // we need to increase the currentSum
+                left++;
+
+            } else {
+
+                // if the sum of left and right elements is neither greater nor smaller than the
+                // given sum, it must be equal
+                return "(" + left + ", " + right + ")";
+            }
+        }
+
+        // if we reach here, that means we could not find any pair which adds up to given sum
+        return "()";
+    }
+}
