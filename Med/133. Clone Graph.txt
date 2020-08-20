@@ -1,0 +1,71 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+    
+    public Node() {
+        val = 0;
+        neighbors = new ArrayList<Node>();
+    }
+    
+    public Node(int _val) {
+        val = _val;
+        neighbors = new ArrayList<Node>();
+    }
+    
+    public Node(int _val, ArrayList<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+}
+*/
+
+class Solution {
+    public Node cloneGraph(Node root) {
+        //the point of the queue is to let us populate the edge relations at each node we visit during our bfs search
+        //the idea is that we use a map to help clone the graph
+        //the key is the original node and the value is the cloned version of that node
+        
+        if (root == null) return null;
+ 
+      // use a queue to help BFS, the only nodes in the queue will be the original nodes
+      Queue<Node> queue = new LinkedList<Node>();
+      queue.add(root);
+
+      // use a map to save cloned nodes
+      Map<Node, Node> map = new HashMap<Node, Node>();
+
+      // clone the root,we build the clone graph using the hash map
+      map.put(root, new Node(root.val));
+      
+      //run bfs to build the graph
+       
+      while (!queue.isEmpty()) {
+          
+        //we take a node from the queue, which contains only original nodes and needs to be proccessed
+        Node node = queue.poll();
+
+        //in this for loop we create the edges for the cloned version of the node
+        //that the original node had with its neighboring nodes
+        for (Node neighbor : node.neighbors) {
+          //the check here
+          if (!map.containsKey(neighbor)) {
+            // clone the neighbor
+            map.put(neighbor, new Node(neighbor.val));
+            // add the neighbor into the queue so it will be in the next bfs level
+            queue.add(neighbor);
+          }
+
+         //here we are adding the cloned version of the neighbor that the original node had, but we add
+        //this cloned version of the neighbor, to the OG node's cloned version
+       //in a sense we are replicating the edges between the nodes in the original graph here, but for the cloned graph
+          map.get(node).neighbors.add(map.get(neighbor));
+        }
+      }
+      //we return the cloned version of the root, as it contains the cloned undirected graph
+      return map.get(root);
+    }
+}
+
+ 

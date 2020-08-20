@@ -75,6 +75,8 @@ class Solution {
             return;
         //if our map doesnt contain that node we have to build the undirected graph fo ir
         if (!map.containsKey(node)) {
+		//you make a clone of the node you are on and then add the relationship to the clone
+               //hence why we map the node as the key to its value which is the clone
             map.put(node, new ArrayList<TreeNode>());
             //check if the node has a parent
             if (parent != null)  {
