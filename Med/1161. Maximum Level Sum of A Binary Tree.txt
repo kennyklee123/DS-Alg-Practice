@@ -1,0 +1,83 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+        public int maxLevelSum(TreeNode root){
+        
+        int max = Integer.MIN_VALUE, maxLevel = 1;
+        //set up bfs here 
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        //we start at level 1
+        for (int level = 1; !q.isEmpty(); ++level) {
+            //sum of the current level
+            int sum = 0;
+            //process the nodes in the current levle here
+            for (int sz = q.size(); sz > 0; --sz)
+            {
+                TreeNode n = q.poll();
+                sum += n.val;
+                if (n.left != null) { 
+                    q.offer(n.left);
+                }
+                if (n.right != null) {
+                    q.offer(n.right);
+                }
+            }
+            //check to see if the current level has a larger max
+            if (max < sum) {
+                max = sum;
+                maxLevel = level;
+            }
+        }
+        return maxLevel;
+    }
+}
+/*
+My non optimal version
+public int maxLevelSum(TreeNode root) {
+ 
+        //idea is we are going to use itterative BFS
+        //we have two variables, one holds the level of the max sum and the second holds the max sum itself
+        //we iterate using BFS add the value of all nodes in that level
+        //we have 
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        int maxLevel = 1, currentLevel = 1, maxSum = Integer.MIN_VALUE;
+        while(!q.isEmpty()){
+            //we use size to itterate only on one level
+            int size = q.size();
+            int levelSum = 0;
+            //itterate through the level and add its sum 
+                TreeNode temp = q.poll();
+                levelSum += temp.val;
+                //add the children of the nodes of this level
+                if(temp.left != null)
+                    q.add(temp.left);
+                if(temp.right != null)
+                    q.add(temp.right);
+            }
+            //now if this level's sum is the largest we found, we set this level and max sum to the values here
+            if(levelSum > maxSum){
+                maxLevel = currentLevel;
+                maxSum = levelSum;
+            }
+            currentLevel++;
+            
+        }
+        return maxLevel;
+        
+    }
+*/ 
