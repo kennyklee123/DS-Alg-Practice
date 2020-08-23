@@ -1,0 +1,38 @@
+     
+class Solution {
+   
+    //Time Complexity is O(n) where n is the # of dominos we have, because even though we do this 4 different times
+    //that 4 is constant and doesnt scale with input
+    //Space Complexity is O(1) just a few variables
+    //Because in order for this to be possible every Domino needs share a number. So they could either share the top or the bottom of the first Domino since even if every other Domino shared a value if they don't all have one of the values on the first Domino it is impossible.
+    public int minDominoRotations(int[] A, int[] B){
+        //make everything in A Match A[0]
+        //make everything in A match B[0]
+       int minSwaps = Math.min(
+            numSwaps(A[0], A, B),
+            numSwaps(B[0], A, B)
+       );
+       minSwaps = Math.min(minSwaps, numSwaps(A[0], B, A));//make everything in B match A[0]
+       minSwaps = Math.min(minSwaps, numSwaps(B[0], B, A));//make everything in B Match B[0]
+       return minSwaps == Integer.MAX_VALUE ? -1 : minSwaps;    
+    }
+    
+    public int numSwaps(int target, int[] A, int[] B){
+        int numSwaps = 0;
+        for(int i = 0; i< A.length; i++){
+            //if the index of both arrays is not the same as our target then it is
+            //impossible to make all the array indexes match that value
+            if(A[i] != target && B[i] != target)
+                return Integer.MAX_VALUE;
+            //this means B[i] is the target
+            else if(A[i] != target){
+                numSwaps++;
+            }
+        }
+        //if it hits this point you can swap the dominos
+        return numSwaps; 
+        
+    } 
+}
+
+

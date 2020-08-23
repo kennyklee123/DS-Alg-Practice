@@ -1,0 +1,58 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+public List<Integer> preorderTraversal(TreeNode root) {
+    //time complexity is O(n) where n is the number of nodes in the tree
+    //space Complexity is O(n) where n is the number of nodes we have to store in the stack
+    //idea is to use dfs itteraively and we use a stack for that
+    //Preorder is root left right heence we push root right then left since a stack is last in first out'
+    //initailize everything for dfs and return type
+    
+    
+	List<Integer> ret = new ArrayList<Integer>();
+    //check edge case if root is null
+	if(root == null) return ret;
+	Stack<TreeNode> stack = new Stack<>();
+	stack.push(root);
+    //start the dfs
+	while (!stack.isEmpty()) {
+        
+		TreeNode node = stack.pop();
+        //root left right
+		ret.add(node.val);
+		if(node.right != null) stack.push(node.right);
+		if(node.left != null) stack.push(node.left);
+	}
+	return ret;
+}
+}
+
+
+/*
+public List<Integer> preorderTraversal1(TreeNode root) {
+    List<Integer> ret = new ArrayList<>();
+    dfs(root, ret);
+    return ret;
+}
+
+private void dfs(TreeNode root, List<Integer> ret) {
+    if (root != null) {
+        ret.add(root.val);
+        dfs(root.left, ret);
+        dfs(root.right, ret);
+    }
+}
+recursive*/

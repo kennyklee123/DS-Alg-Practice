@@ -1,0 +1,31 @@
+class Solution {
+    public int findDuplicate(int[] nums)
+    {
+        //floyd tortaise and hare
+        //time complexity is 0(n), where n is the number of nodes in the cycle as we will cover them all at least once
+        //space complexity is constant
+      if(nums.length <= 1)
+          return -1;
+      int tort = nums[0];//initalize them
+      int hare = nums[0];//initialize them
+      //set up hare and tortoise tort is x speed hare is 2x
+      hare = nums[nums[hare]];
+      tort = nums[tort];
+      while(tort != hare){
+          
+          tort = nums[tort];
+          hare = nums[nums[hare]];
+      }
+     //you have too set either the tortoise or hare back to the start when after they meet to find the start of the cycle
+     //the start of the cycle is the duplicate #
+      hare = nums[0];
+     while(tort != hare){
+         tort = nums[tort];
+         hare = nums[hare];
+     }
+     return hare;
+    }
+}
+
+
+
