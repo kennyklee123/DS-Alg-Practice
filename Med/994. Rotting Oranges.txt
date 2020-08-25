@@ -1,0 +1,66 @@
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        //check edge cases for size/ if it exists
+        if(grid == null || grid.length == 0 || grid[0].length == 0)
+            return 0;
+        //IDEA: use a nested for loop to check for rotten oranges
+        //when we find a rotten orange we start our BFS call on it
+        //given a level of  rotten oranges we check its neighboring cells and if its a normal orange
+        //we add that into the queue for the next level to be processed,
+        //every level we increment our "minutes" by 1 which is just an int variable
+        //Time Complexity O(n) where n is the number of cells we in the 2d matrix
+        //Space Comeplxity O(n) worse case is that every cell is rotten and we process all cells
+        
+        int rows = grid.length;
+        int cols = grid[0].length;
+        //queue has to be int[] as we cant actually hold int[i][j] so what we do is use int[0] = i and int[1] =j
+        Queue<int[]> queue = new LinkedList<>();
+        
+        int freshCount = 0;
+        //using this nested for loop we will find the rotton oranges and the number of fresh oranges
+        for(int i = 0 ; i < rows ; i++) {
+            for(int j = 0 ; j < cols ; j++) {
+                if(grid[i][j] == 2) {
+                    queue.offer(new int[]{i , j});
+                }
+                else if(grid[i][j] == 1) {
+                    freshCount++;
+                }
+            }
+        }
+        //if we have no fresh oringes, it takes 0 minutes of time
+        if(freshCount == 0)
+            return 0;
+        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};//this is used to check the neighboring cells, it is down, up, right, left
+        int count = 0; //this hold how many minutes are needed until there are no fresh oranges
+        //we start the bfs here and iterate as long as there is rotten fruit to process and fresh fruit to be rotten
+        while(!queue.isEmpty() && freshCount >  0 ){
+            ++count;
+            int size = queue.size();
+            //itereate through our current levle
+            for(int i = 0; i < size; i++){
+                //this is the point of our current rotten orange
+                int[] point = queue.poll();
+                //we use the directions array to check the neigboring cells int[0] is row int[1] is col
+                for(int[] dir : dirs){
+                    //we add them to change i and j, EX i = 5 dir = 1 5+1 = 6 you just moved down a row
+                    int x = point[0] + dir[0];
+                    int y = point[1] + dir[1]; 
+                    //now we check to see if the neighboring cell at int[x][y] is a valid position and a fresh orange that can be rotted
+                    //if it is out ouf bounds, or if the cell is a rotten orange or is empty, we continue
+                    if(x < 0 || y < 0 || x >= rows || y >= cols || grid[x][y] == 0 || grid[x][y] == 2)
+                        continue;
+                    //if it reaches this point it is a fresh orange so now we make it rotten, as it will be rotten next bfs iteration
+                    grid[x][y] = 2;
+                    // add it to the queue to be processed next bfs iteration, since our queue is an int[] we cant just add graph[x][y
+                    queue.offer(new int[]{x , y}); 
+                    freshCount--;  // decrement the count of fresh fruit                 
+                }
+            }
+        }
+        //if the number of fresh fruit is zero we return the number of minutes it needs to reach that point, else its impossible
+        return freshCount == 0 ? count : -1;
+    
+    }
+}
+

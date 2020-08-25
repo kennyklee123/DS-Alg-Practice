@@ -1,0 +1,53 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int kthSmallest(TreeNode root, int k)
+    {
+        //INTUITION BINARY TREE INORDER TRAVERSAL GIVES YOU ELEMENTS IN ASCENDING ORDER
+        //Non Optimal: inorder traversal on the tree and return the kth thing in the list, space and time would be O(n)
+        //Optimal:we use DFS inorder traversal but instead of saving our values in a list 
+        //we have an int array, arr[0] holds where we are at in the tree arr[1] holds the value of kth smallest we want to return
+        //we also increment nums[0] by 1 in the if loop check, which i forgot you cna do
+        //Time Complexity is O(n) Space is O(n) but theres left overhead
+        
+        
+        int[] res = new int[2];
+        inorder(root, res, k);
+        return res[1];
+    }
+    //inorder is left root right
+    public void inorder(TreeNode root, int[] nums, int k){
+         System.out.println(nums[0]);
+        //base case
+        if(root == null)
+            return;
+        
+        //we go down to the left as far as we can, as the left most node is the smallest value in our tree
+        inorder(root.left, nums, k);
+       
+        //we check the roots value here
+        //we increment nums here at the if loop and its ++ as k is 1 indexed not zero index, which means that our nums[0] starts at 0, but it is the 1st smallest element hence why we ++num[0] 
+        //we check if the node we are on in the recursion is the kth element, if it is we set that val to nums[1] to be returned
+        
+        if(++nums[0] == k){
+            nums[1] = root.val;
+        }
+        
+        //now we check right
+        inorder(root.right, nums, k);
+    }
+}
+

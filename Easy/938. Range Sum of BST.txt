@@ -1,0 +1,61 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int rangeSumBST(TreeNode root, int L, int R) {
+        
+        //way1 : use BFS to check nodes in a level, and you add its children if the children's value falls in our range
+        //way2 : use DFS to check the nodes, and just like BFS you only check a node's child if the child's val is in our range
+        //that time complexity is O(n) space is O(n) where n is the number of nodes in the tree as you will have to visit every node, as it is possible that all nodes in the tree are in the inclusive given range
+        
+        //Edge Cases can L and R be negative
+        //can the value in the roots be negative
+        //what happens if L == R? 
+        //what happens if root is null
+        if(root == null)
+            return 0;
+        //set up for bfs
+        int sum = 0;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        //bfs time
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i <size; i++){
+                TreeNode cur = q.poll();
+                if(L <= cur.val && cur.val <= R)
+                    sum += cur.val;
+            //now we check if we can add any children
+            //if our current node's val is > than L, that means that its left subtree can contain children that are less than it but still greater or equal to L
+                if(cur.left != null && cur.val > L )
+                    q.offer(cur.left);
+            //if the current node's val is less than R, its right subtree can contain nodes greater then current node's val and still be smaller than R,
+                if(cur.right != null && cur.val < R)
+                    q.offer(cur.right);
+            }
+        }
+        return sum;
+    }
+}
+/* 
+public int rangeSumBST(TreeNode root, int L, int R) {
+        if (root == null) { return 0; }
+        int sum = 0;
+        if (root.val > L) { sum += rangeSumBST(root.left, L, R); } // left child is a possible candidate.
+        if (root.val < R) { sum += rangeSumBST(root.right, L, R); } // right child is a possible candidate.
+        if (root.val >= L && root.val <= R) { sum += root.val; } // count root in.
+        return sum;
+    }
+    */
