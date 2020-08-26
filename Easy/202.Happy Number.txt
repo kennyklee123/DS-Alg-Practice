@@ -1,25 +1,33 @@
 class Solution {
-    public boolean isHappy(int n)
-    {
-	//hashset is used to detect loops
-        HashSet<Integer> visited = new HashSet<>();
-        while(n != 1)
-        {
-            int val = n;
-            int total = 0;
-            while(val !=  0)
-            {
-                total += (val % 10) * (val %10);
-                val /= 10;
+    public boolean isHappy(int n) {
+        //check edge cases
+        //Time complexity is 
+        if(n < 0)
+            return false;
+        //we use a set to add the sum of squares to check for a loop
+        HashSet<Integer> set = new HashSet<>();
+        
+        //we itterate until we find out that n is a happy number or if there is a loop
+        while(n != 1){
+            int sum = 0;
+            //we take the last number in n, square it, add it to our sum and then truncate our last number
+            //we do this while we have not gone through all the digits of our current number n
+            while(n > 0) {
+                //get the last digit in current, square it and add it to our sum 
+                sum += (n % 10)  * (n % 10);
+                n /= 10;
+                //we multiply the last digit in current and add it to            
             }
-	    //if we have seen the sum of squares already, we are in a loop and we exit
-            if(visited.contains(total))
-             return false;    
-            visited.add(total);
-            n = total;
+
+            //we now have the next number we should start summing the square of
+            //if we have seen this sum before, we are in a loop
+            if(set.contains(sum))
+                return false;
+            //we have not seen this sum before so we add it to our HashSet
+            set.add(sum);
+            //we set n to our current sum, as it will either by 1 or needs to be processed again
+            n = sum;
         }
         return true;
-        
-        
     }
 }
