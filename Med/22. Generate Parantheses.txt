@@ -1,0 +1,48 @@
+class Solution {
+      /*
+        Brute force 
+        Generate all(2^(2n) possible paranthese strings and validate each for being balanced
+              
+        My ALG: We use Backtracking based on the 3 key things it would look like DFS 
+        Our Choice: Place a ( or )
+        Our Constraints: 
+        we cant place more left ( than n 
+        we cant place a ) unless we a have a ( to balance
+        Our Goal: place n x 2 characters, n = number of opening brackets we have, if n = 3 our length of our stirng is 6
+        once we do n x2 placements we are done and add that string to our list and then we recurse and allow our callers
+        to express more of their states
+        //we can only place a right when the # of left brackets left to place is < # of right
+        Time Complexity is hard to figure out
+        Space Complexity: O(2*n) as the recursion stack will be n * 2 deep which is just O(n)(This is not including our output which is the arraylist, but with the arraylist it is still just O(n)
+        */
+    public List<String> generateParenthesis(int n) {
+        //edge cases
+        if(n <= 0)
+            return new ArrayList<String>();
+        ArrayList<String> res = new ArrayList<String>();
+        backtrack(res, "", 0, 0, n);
+        return res;
+
+    }
+    
+    public void backtrack(List<String> res, String str, int left, int right, int max){
+        //base case where we have a completed string you reutrn to the caller
+        //a completed string is a length of n*2 where n is the pairs of parantheses
+        if(str.length() == max *2){
+            res.add(str);
+            return;
+        }
+        //this alg looks like a dfs we place all left ( first, then start to place ) 
+        
+        //if we have left brackets we can place we place those first
+        if(left < max){
+            backtrack(res, str + '(', left+1, right, max);
+        }
+        //we can only place right brackets when there are more left brackets then right brackets
+        if(right < left){
+            backtrack(res, str + ')', left, right+1, max);
+        }    
+        
+    }
+}
+

@@ -1,0 +1,38 @@
+class Solution {
+    public boolean validMountainArray(int[] A) {
+       //idea have two while loops
+        //first while loop checks the portion that is ascending,
+        //second while loop checks the portion that is descending starting at the end of the first while loop
+        //if it passes both loops return true if it fails in the if loop in the seocnd case return false
+        //Time O(n) where n is the number if integers in the array
+        //space is constant
+        
+        int i = 0;//needed to tell where the end of the first while loop ends 
+        //this checks the ascending portion
+        //loops while we are still in bounds of the array and it is still ascending
+        //whenever this loop breaks we either go through all the elements or we stopped at a decrease
+        while(i < A.length && i + 1 < A.length && A[i] < A[i+1]){
+            i++;//increment the index 
+        }
+       
+        
+        //check edge cases to confirm we had an increasing sequence
+        //1. it is possible where the array is only increasing
+        //2. it is possible that the array was never decreeasing
+        if(i == 0 || i + 1 >= A.length)
+            return false;
+        
+        
+        //check the decreasing sequence and make sure it was decreasing the entire time
+        while(i < A.length && i + 1 < A.length){
+            //if the prev is less than or equal the next it isn't strictly decreasing
+            //we also need to increment i, which we do by doing A[i++ +1]
+            //this means increment 1 by one, then look at the i +1 index
+            if(A[i] <= A[i++ +1]){
+                return false;
+            }
+        }
+        //if it reaches this case then it is a valid mountain array
+        return true;
+    }
+}

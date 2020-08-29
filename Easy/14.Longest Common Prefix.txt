@@ -24,28 +24,20 @@ class Solution {
     }
 }
 /*
-Brute force
- String lcp = "";
-        if(strs.length ==0)
-            return lcp;
-        //index is used to keep track  of the index of the character we are currently at
-        int index =0;
-        //iterate throguh the characters in the first string 
-        for(char a : strs[0].toCharArray())
-        {
-            //loop through the array to check if every string contains the character we are on
-            for(int i = 1; i<strs.length;i++)
-            {
-                //index is out of bounds and if the character at index is not the same
-                //index is used to optimize our runtime as if the index > the length of the string, we are done finding the longest prefix
-                if(index >= strs[i].length() || a != strs[i].charAt(index))
-                   return lcp;
+    //we take the first word as our prefix and check it with the other words in the string
+    //we check to see if the prefix is a substring of the word we are on
+    //if it is not we reduce the length by 1 until the prefix is a substring of the word we are on
+    //Or we hit 0 which means that the prefix will be empty as there is no common prefix
+    if(strs.length == 0) 
+        return "";
+        //set the first word as our prefix
+        String prefix = strs[0];
+        for(int i =1; i<strs.length; i ++){
+            //while we can not find the prefix at the beginning of the string we are on
+            //we decrease the size of the prefix string, it reduces the # of chars by 1
+            while(strs[i].indexOf(prefix) != 0){
+                prefix = prefix.substring(0, prefix.length() -1);
             }
-            //if its not returned in the if loop above, all strings contain that character 
-            //so add that character to our lcp and increment our index
-            lcp += a;
-            index++;
-                  
         }
-       return lcp;   
-       */
+        return prefix;
+*/
