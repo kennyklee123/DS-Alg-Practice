@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode trimBST(TreeNode root, int L, int R) {
+        /*
+        The idea is that we are going ot have 3 base cases
+        if the root is null we just return a
+        if the root's value is less than L, we are going to check its right child which is greater than root, which means that it can possibly be > L
+        if the roots value is > R, we are going to check its less child which can be < R which means it can be possibly < R
+        
+        If neither of those cases hit, that means that root is between L and R, which means that we can check both of its children and we also return the root val
+        as the root val is valid and needs to be included into our Tree
+        
+        The way we trim is actually by not returning the nodes that are not in the bounds, we only return nodes at the last else statement which means that those node's are in the bounds of L and R
+        
+        Time is O(N) as we have to hit each node in the tree
+        Space is O(n) as we can create a tree that is the size of N nodes we began with
+        */
+        
+        
+        if(root == null)
+            return null;
+        //if the root val < L, its right child can be >= L
+        if(root.val < L)
+            return trimBST(root.right, L ,R);
+        if root val is > R, its left child can be <=R
+        else if(root.val > R)
+            return trimBST(root.left, L, R);
+        
+        //if it hits the case, root val is inbetween the range of L and R and we can check both children and return the root, since it should not be trimmed
+        else {  
+            root.left = trimBST(root.left, L, R);
+            root.right = trimBST(root.right, L, R);
+            return root;
+        }
+    }
+}

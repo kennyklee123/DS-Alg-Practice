@@ -1,0 +1,20 @@
+class Solution {
+      public int lastStoneWeight(int[] A) {
+          
+        /*ALG idea: we add all stones into a max heap to sort them by size
+       then we take the top two stones, subtract  them and add them back into the PQ
+       we do this until we only have one stone left and return it
+       
+        Time Complexity: O(nlogn) where n is the number of stones in the array, we do log n actions on n stones using a heap
+        Space O(n) as we will add n stones into the heap
+        
+        */
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b)-> b - a);
+        for (int a : A)
+            pq.offer(a);
+        
+        while (pq.size() > 1)
+            pq.offer(pq.poll() - pq.poll());
+        return pq.poll();
+    }
+}

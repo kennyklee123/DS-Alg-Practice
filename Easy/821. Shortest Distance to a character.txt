@@ -1,0 +1,37 @@
+class Solution {
+    public int[] shortestToChar(String S, char C) {
+        /*
+        Alg IDEA: 
+        we do two passes finding the shoretest distance to char c for every char in s
+        we hold that distance in a corresponding int array, so for every charAt(i) its shortest distance is held in int arr[i]
+        
+        IDEA: each pass uses the int pos variable to hold the index of the last seen char C at every index we check if that char is C, if it is we updated pos to that index
+        Left pass: the shorest distance for the char we are on from char C is the index of that character in the string - the index of the last seen char C
+        Right pass: shoretest distance is the Minimum of the shortest distance found in the left pass and the distance we found in the right pass
+        */
+        
+        //pos holds the index of the last char C found and we use -n as its starting value as it needs a large negative number so that distances
+        //were not improperly calculated before we actually see the char C
+        //res holds the resulting array full of the shortest distance to a char C for every character in the string
+        int n = S.length(), pos = -n, res[] = new int[n];
+        //left pass 
+        for (int i = 0; i < n; ++i) {
+            if (S.charAt(i) == C)
+                //this is the most recent char C in the string so we update our pos
+                pos = i;
+            //calculate the shortest distance for the char we are on
+            res[i] = i - pos;
+        }
+        
+        //right pass
+        for (int i = pos - 1; i >= 0; --i) {
+            if (S.charAt(i) == C)
+                pos = i;
+            //compare the shortest distance found in the left and right pass for the char we are on
+            res[i] = Math.min(res[i], pos - i);
+        }
+        
+        return res;
+    }
+}
+

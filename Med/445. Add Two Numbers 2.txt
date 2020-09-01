@@ -1,0 +1,79 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        //Their adding is not your normal math like the Add Two Numbers V1, its adding from the front of the number EX 3427 + 465 = 7076 3+4 = 7, 4+6 = 10 so carry 1,  1+2+5 = 8, 7 is just s7
+        //normal math adds from right to left starting from least significant this is left to right 
+       
+        //ALG: use a stack for each list and push all the values onto the stack so we can add them from the most significant digit to the least
+        //We have a sum and carry variable that are used to determine the sum of the two nodes
+        //if carry = sum /10, sum = sum % 10
+        //To form the new linked list we have to figure out how to do it going from least signiificant to most significant like the linked list, but the problem is that we are adding left to right not right to left
+        //Solution 1: when we find out the sum of a node, push it onto its own stack so when we add left to right, when we pop it the nodes will be from right to left
+        //Solution 2: you add the nodes, but reverse it when doing so, I will be doing solution 2
+        
+        //Time Complexity is O(n) where n is the number of nodes in the linked list we have to process ,its O(n) because we only ever do n work
+        //Space is O(n) where n is the number of nodes we have to store in the reuslt      technically its 2n but that becomes n
+        
+        //edge cases here
+            
+        if(l1 == null && l2 == null)
+            return null;
+     
+        Stack<ListNode> stack1 = new Stack<>();
+        Stack<ListNode> stack2 = new Stack<>();
+        ListNode dummyHead = null; //use this to return the start of the linkedlist
+        ListNode curr = dummyHead; //use this to add to the linked list
+        //push them onto the stack here
+        while(l1 != null){
+            stack1.push(l1);
+            l1 = l1.next;
+        }
+        while(l2 != null){
+            stack2.push(l2);
+            l2 = l2.next;
+        }
+        
+        int carry = 0; 
+        //this will point to the end of our linked list, which will be left sided since we are adding nodes in reverse
+        //Linked List usually have their "ends" to the right, so you could just say node.next = (the node you want to add to teh end)
+        //but we do this  in reverse due to the problem
+        ListNode dummy = null;
+        //iterate while we have nodes to process
+        while(!stack1.isEmpty() || !stack2.isEmpty() ||  carry != 0) {
+            int f = stack1.isEmpty() ? 0 : stack1.pop().val;
+            int s = stack2.isEmpty() ? 0 : stack2.pop().val;
+            
+            //this is the sum of the current levle
+            int t = f + s + carry;
+            
+            
+            //the next few lines are doing the reverse linked list portion
+            //we create a node for the sum found on this level, then we set that node's .next to our pointer for the node at the right
+            //our "end" of the linked list is on the left side, while normal linked list have their ends on the right
+            //by having our end of the linked list on the left, we can essentially add our nodes in reversed order, which is needed
+            //since we are adding from the most significant bit to least significant bit, which is a reversed order
+            
+            //create a node with the sum we found for this level
+            ListNode newNode = new ListNode(t % 10);
+            //to add the node to the end of the linked list, we say the node we just made for this level's next node, is now the end of our current linked list, which makes sense
+            newNode.next = dummy;
+            //now we make our pointer for the end of the linked list to the latest node we just added to the chain
+            dummy = newNode;
+            //figure out the carry for the next node
+            carry = t/10;
+            
+        }
+     //this will return the "start " of our linked list, which starts at the least significant digit
+     return dummy;        
+    }
+}
+
