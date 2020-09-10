@@ -1,0 +1,33 @@
+class Solution {
+    /*
+    Cartesan Product,
+     Formula needed F(i,n)  = G(i-1) * G(n-i)
+     i is the root we are at, n is the number of nodes we have
+     its basically left sub tree possibilties * right sub tree possibilties, as the product of those two 
+     are the # of unique BST we can make using the root we are at with the number of nodes we have
+     
+     we basically build the answer G(n) from F(i,n) + F(i+1,n) etc  like G(3) = F(1,3) + F(2,3) + F(3,3)
+     builds our answer over time
+     
+     
+     Time O(N^2) does not mean for every single n it does n iterations, it could be like 1/2 n^2 but its still n^2, its just rounded
+     space O(n) store solution to n+1 sub problems if you count the index zero sub problem
+    */
+    public int numTrees(int n) {
+         int [] G = new int[n+1];
+          G[0] = G[1] = 1;
+    
+        //i and j are used for the left and right subtrees
+        
+          for(int i=2; i<=n; ++i) {
+              //we go through each root i for n nodes
+            for(int j=1; j<=i; ++j) {
+                //G[i-j] is the right subtrees
+                //G[j-1] is the left subtrees
+              G[i] += G[j-1] * G[i-j];
+            }
+          }
+          
+          return G[n];
+    }
+}
