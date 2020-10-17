@@ -1,0 +1,30 @@
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+         if (nums == null) return new ArrayList<>();
+       /*
+       ALG: traverse through the array once, tagging the numbers negative
+       we tag them negative by taking the value of the integer, and then making that integer's position in the array negative
+       EX num[i] = 4, we mark index 4 in the array which is position 3, we mark it negative
+       
+       THEN we pass through the array again to look for the missing #
+       if  the value of the cell is positive, that means we never found that number in the nums array
+       EX if nums[4]'s value is positive, we never found a 5 in the nums array, so 5 is missing
+       */
+        
+        List<Integer> ret = new ArrayList<>();
+        for (int i = 0; i < nums.length; ++i) {
+            int n = Math.abs(nums[i]);
+            //if the number is > 0 that means we have not seen it before, so mark it as seen with a negative
+            if (nums[n-1] > 0) {
+                
+                nums[n - 1] = -nums[n - 1];
+            }
+        }
+        
+        for (int i = 0; i < nums.length; ++i) {
+            if (nums[i] > 0) ret.add(i+1);
+        }
+        // perhaps we need to restore the original array;
+        return ret;
+    }
+}

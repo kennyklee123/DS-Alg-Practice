@@ -1,0 +1,67 @@
+class Solution {
+    /*
+    ALG
+    At every index starting from the left
+    we are going to call permute and then return it
+    permute will do a few things, and it is void
+    1st, checks if its at goal state where the index == str.length which means that we turn the char array into a string and add it to res
+    2nd We check if it is a letter or not
+    If it is a letter, turn the char at the current index to lower case and call permute on it, then turn that char into upper case and call permute on it
+    As an optimization, we have the second permute recurisve call outside of the if block, as it will be used for the upperCase recursive calls
+    and if the character is not a letter,
+    We build the strings recurisvely by doing this process
+    
+    */
+    public List<String> letterCasePermutation(String S) {
+       List<String> res = new ArrayList<>();
+        permute(res, S.toCharArray(), 0);
+        return res;
+    }
+    
+    public void permute(List<String> res, char[] str, int index){
+        //if index == length we just itterated over the whole string, so add it to the result
+        if(index == str.length){
+            res.add(new String(str));
+        }
+        else {
+        
+            if(Character.isLetter(str[index])){
+                str[index] = Character.toLowerCase(str[index]);
+                permute(res, str, index+1);
+                str[index] = Character.toUpperCase(str[index]);     
+            }
+            //optimization having the second permute out here allows us call permute with teh uppercase char and permute if the current index of str is a number(numbers just get skipped)
+            permute(res,str,index+1);
+        }
+    }
+    
+
+}
+
+/*public List<String> letterCasePermutation(String S) {
+        if (S == null) {
+            return new LinkedList<>();
+        }
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(S);
+        
+        for (int i = 0; i < S.length(); i++) {
+            if (Character.isDigit(S.charAt(i))) continue;            
+            int size = queue.size();
+            for (int j = 0; j < size; j++) {
+                String cur = queue.poll();
+                char[] chs = cur.toCharArray();
+                
+                chs[i] = Character.toUpperCase(chs[i]);
+                queue.offer(String.valueOf(chs));
+                
+                chs[i] = Character.toLowerCase(chs[i]);
+                queue.offer(String.valueOf(chs));
+            }
+        }
+        
+        return new LinkedList<>(queue);
+    }
+    
+    
+*/

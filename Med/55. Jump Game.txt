@@ -1,0 +1,29 @@
+class Solution {
+    public boolean canJump(int[] nums) {
+        
+        /*
+        if we go backwards and keep track of what spot you can get to from the last index(the solution)
+        https://www.youtube.com/watch?v=Zb4eRjuPHbM
+        the idea is you ask, what index can get to your last good index you were at
+        if there is an index that can reach your last good index, make that your last good index
+        you do this right to left setting your last good index as the last index of the array, as thats the solution
+        by the time you parse throguh the whole array, if the pointer is not at the start of the index, its false as you cant reach the end
+        */
+        
+        if(nums.length == 0)
+            return true;
+        
+        
+        //last good position is the last element in teh array(solution)
+        int lastGoodIndexPos = nums.length-1;
+        
+        for(int i = nums.length-1; i >= 0; i--){
+            if(i + nums[i] >= lastGoodIndexPos){
+                lastGoodPos = i;
+            }
+        }
+        return lastGoodIndexPos == 0 ? true : false;
+    }
+    
+    
+}  

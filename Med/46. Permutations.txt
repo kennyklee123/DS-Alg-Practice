@@ -1,0 +1,32 @@
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        if(nums.length == 0 || nums == null)
+            return new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        permute(res, new ArrayList<>(), nums);
+        return res;
+    }
+    
+    /*
+    This version is iterates like 1, 1,2, 1,2,3, 1,3,2 then 2, 2,1   2,1,3,    2,3,1
+    */
+    public void permute(List<List<Integer>> res, List<Integer> tempList, int[] nums){
+        if(tempList.size() == nums.length)
+            res.add(new ArrayList<>(tempList));
+        else{
+            //we itterate from the start to end bc we cant do it like subsets, since they all have to be size 3
+            //in subsets it can be like [1], [2], [1,2], [1,2,3] etc
+
+            for(int i = 0;i < nums.length; i++){
+            //do not add numbers we have used
+                if(tempList.contains(nums[i]))
+                    continue;
+                 tempList.add(nums[i]);
+                //call it recursively
+                 permute(res, tempList, nums);
+                //backtack
+                 tempList.remove(tempList.size()-1);
+            }
+        }
+    }
+}

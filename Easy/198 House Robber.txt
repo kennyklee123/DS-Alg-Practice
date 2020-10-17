@@ -1,0 +1,35 @@
+class Solution {
+    public int rob(int[] nums) {
+        
+        
+        /*ALG
+        You have two options in the dp relation
+        
+        dp[i] = max of what you had the last index OR
+        the sum of the house you are at right now + the sum you had two houses ago
+        its dp[i-1] or nums[i] + dp[i-2]
+        because if you take whats in the house right now, you cant have what you had at the last house
+        so you take the max of what you had at the last house, or you take from the current house and add it to what you had two houses ago
+        
+        
+        */
+        if(nums.length == 0 || nums == null)
+            return 0;
+        if(nums.length == 1)
+            return nums[0];
+        if(nums.length==2)
+            return Math.max(nums[0], nums[1]);
+        int[] dp = new int[nums.length];
+        
+        //the first position will get the first index
+        dp[0] = nums[0];
+        //second position would be the max of the first or second nums index
+        dp[1] = Math.max(nums[0], nums[1]);
+        
+        for(int i=2; i < nums.length; i++){
+            
+            dp[i] = Math.max((dp[i-2] + nums[i]), dp[i-1]);
+        }
+        return dp[nums.length-1];
+    }
+}

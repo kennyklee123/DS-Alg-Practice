@@ -1,0 +1,20 @@
+class Solution {
+    
+    /*
+    ALG: since the numbers of nums are always <= n where n is the size of nums, we do this trick
+    we itterate over the number, and for every index, we take the abs of its value
+    then check if num[value] is negative, if it is negative that means we have seen it before and add nums[i] to the result
+    else if its not negative, turn it into negative
+    EX nums[0] = 4, we turn nums[4-1] into negative, because nums[3] is position 4 
+    */
+    public List<Integer> findDuplicates(int[] nums) {
+         List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < nums.length; ++i) {
+            int index = Math.abs(nums[i])-1;
+           if (nums[index] < 0)
+                res.add(index+1);
+            nums[index] = -nums[index];
+        }
+        return res;
+    }
+}

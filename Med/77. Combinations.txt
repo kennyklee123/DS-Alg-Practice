@@ -1,0 +1,26 @@
+class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+		generate(res, new ArrayList<Integer>(), 1, n, k);
+		return res;
+    }
+    
+    /*
+    Use backtacking, we subtract 1 from k everytime and whenver k is =, our temp arraylist is the length f of numbers 1..n
+    */
+    public static void generate(List<List<Integer>> res, List<Integer> temp, int start, int n, int k){
+        if(k == 0){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        //we do n-k+1 for optimization instead of i <= n, as you only want to itterate up to size k left
+        //for EX if you know n = 10, k= 5, you will only iterate over 1,2,3,4,5,6, because thats the size of K, you will never go past it
+        //though if you are start at 2, its 2,3,4,5,6,7, 3 is 3,4,5,6,7,8, etc
+        for(int i = start; i <= n-k+1; i++){
+            temp.add(i);
+            generate(res, temp, i+1, n, k-1);
+            temp.remove(temp.size() -1);
+        }
+    }
+}
+

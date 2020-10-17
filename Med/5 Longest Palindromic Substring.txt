@@ -1,0 +1,32 @@
+class Solution {
+    public String longestPalindrome(String s) {
+        
+        /*
+        ALG use a for loop to iterate over the string
+        at every point check if theres a palindrome for odd/even
+        the helper function returns a string, check to see if that string is longer than our current largest string, if so set it to our largest string
+        */
+        String res = "";
+        
+        if(s.length() == 0 || s == null)
+            return res;
+        for(int i = 0; i <s.length(); i++){
+            String odd = palFinder(s, i, i);
+            if(odd.length() > res.length())
+                res = odd;
+            String even = palFinder(s, i,i+1);
+            if(even.length() > res.length())
+                res = even;
+        }
+        return res;
+        
+    }
+    
+    public static String palFinder(String s, int left, int right){
+        while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)){
+            left--;
+            right++;
+        }
+        return s.substring(left+1, right);
+    }
+}

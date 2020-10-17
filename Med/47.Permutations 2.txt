@@ -1,0 +1,47 @@
+class Solutionclass Solution {
+    
+    /*ALG
+    Its just like permutation 1 except we need to handle duplicates
+    handle duplicates using the used array
+    when a number in nums has the same values with the previois index, we can only use that number if
+    the previous index has been used
+    EX: input 1a 1b 2a
+    we have to use 1a before we can place 1b
+    res would be like [1a,1b,2a], [1b,1a,2a]
+    Assumption: its not sorted
+    */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        if(nums == null || nums.length == 0)
+            return new ArrayList<>();
+        //have to sort the array to use our permute
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        permute(res, new ArrayList<>(), nums, new boolean[nums.length]);
+        return res;
+        
+    }
+    
+    //originally though i could just do it like permutation 1 just checking if templist contains it before adding, this was a mistake TLE
+    //to solve the duplicate permutations, we use a boolean array to mark what we have used
+    public void permute(List<List<Integer>> res, List<Integer> tempList, int[] nums, boolean[] used){
+        if(tempList.size() == nums.length)
+            res.add(new ArrayList<>(tempList));
+        else{
+            for(int i = 0; i < nums.length; i++){
+             //edge case check
+            //if we have used this cell before, skip
+            //if we have used this index and the next is a duplicate and we have not used the duplicate yet
+            //we continue because we cant do anything
+            //idea is that we want to use the earliest instance of a duplicate number
+            //we also only check the order of the duplicate values being used when i >0
+            //if i == 0 and we havent used that index yet, we are at the start of a permutation
+             if(used[i] || i > 0 && nums[i] == nums[i-1] && !used[i - 1]) continue;
+               used[i] = true; 
+                tempList.add(nums[i]);
+                permute(res, tempList, nums, used);
+                used[i] = false; 
+                tempList.remove(tempList.size() - 1);
+            }
+        }
+    }
+}

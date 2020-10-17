@@ -1,0 +1,54 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    
+    /*
+    ALG: hare moves n spots ahead
+    then we move both hare and tortosie together
+    when the hare reaches the end of the list, tortoise's next node is the nth
+    node to be skipped, so we just skip it
+    
+    MATH= nth node from the end is the length-nth node from the beginning
+    so by moving the hare n ahead, the length-nth is how far the tortoise
+    will end up traveling, so the next node would be the node to skip
+    */
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if(head == null || n < 0)
+            return new ListNode(-1);
+        //create a dummy pointer to point at the head of the node
+        ListNode temp = new ListNode(-1);
+        //the next index is the start of the list
+        temp.next = head;
+        
+        //create two pointers so we can itterate over this list
+        
+        //hare will move n spots ahead
+        ListNode fast = temp;
+        
+        ListNode slow = temp;
+        
+        while(fast.next != null)
+        {
+            if(n <= 0){
+                slow = slow.next;
+            }
+            else 
+                n--;
+            fast = fast.next;
+        }
+     
+        //skip the nth node
+        slow.next = slow.next.next;
+        //return the head of the list
+        return temp.next;
+        
+    }
+}

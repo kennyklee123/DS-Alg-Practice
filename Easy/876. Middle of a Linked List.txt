@@ -1,0 +1,27 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    /*
+    ALG: use floyd tortoise and hare, whenever the faster one can no longer jump two spaces ahead meaning that it reached the end of the array
+    return the tortoise as it will be in the middle
+    */
+    public ListNode middleNode(ListNode head) {
+        if(head == null)
+            return new ListNode();
+        ListNode slow = head, fast = head;
+        //check to make sure that we cant jump anymore
+        //if fast is null or fast.next is null we are at the edge already and return slow
+        //these conditions allow both odd and even inputs
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+}
