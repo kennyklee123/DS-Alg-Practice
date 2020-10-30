@@ -1,0 +1,32 @@
+class Solution {
+    
+    /*
+    
+    ALG
+    iterate through the array
+        take the char we are at right  now
+        initialize count of that char
+        now loop while the the next index in the char array is that same char, and increment that pointer/count by 1  
+        place this char as the next position in our resulting string, then increment the pointer to point to the next position in the char array where the next character will go
+        if the count is not 1, add the count as chars into the array, and remember ot increment after you set the char so it goes to the next position for the next char
+    
+    return indexAns which points to the index of where the next char will be placed, but since teh char is indexed at 0, it will actually be the size of the string
+    */
+    public int compress(char[] chars) {
+        int indexAns = 0, index = 0;
+        while(index < chars.length){
+            char currentChar = chars[index];
+            int count = 0;
+            
+            while(index < chars.length && chars[index] == currentChar){
+                index++;
+                count++;
+            }
+            chars[indexAns++] = currentChar;
+            if(count != 1)
+                for(char c : Integer.toString(count).toCharArray()) 
+                    chars[indexAns++] = c;
+        }
+        return indexAns;
+    }
+}

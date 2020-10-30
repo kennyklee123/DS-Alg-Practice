@@ -1,0 +1,33 @@
+class Solution {
+     int[] mapping = new int[26];
+    public boolean isAlienSorted(String[] words, String order) {
+        for (int i = 0; i < order.length(); i++)
+            //basically says whatever teh char is in the alien alphabet we set it to i
+            //EX h-a would give you a value of 8, so mapping[8] = 0, as h is the first letter in the alphabet
+            //EX l-a would give you a diff #, so mapping[l-a] = 1l
+            mapping[order.charAt(i) - 'a'] = i;
+        //now we check if it is sorted by using checking if the current char is bigger than the previous char
+        for (int i = 1; i < words.length; i++)
+            //we return true if teh word at i-1 is larger than the word at i
+            if (bigger(words[i - 1], words[i]))
+                return false;
+        return true;
+    }
+
+    //s1  is previous word s2 is current word
+    boolean bigger(String s1, String s2) {
+        int n = s1.length(), m = s2.length();
+        //iterate over the two strings while the pointers still have room
+        for (int i = 0; i < n && i < m; ++i)
+            //if they are not the same charcter, check which letter is the biggest
+            if (s1.charAt(i) != s2.charAt(i))
+                //we return either true or false here
+                //if the first string's letter is larger than the second string's letter, we return true which in the main function returns false, as it is not lexicographically sorted in this alien language
+                //if the first string's letter is not larger than the second string's letter, it returns false, which makes main continue
+                return mapping[s1.charAt(i) - 'a'] > mapping[s2.charAt(i) - 'a'];
+        
+        //this checks the size, the previous word should be smaller in size than the next word if their characters are mostly the same
+        //EX app comes before apple
+        return n > m;
+    }
+}

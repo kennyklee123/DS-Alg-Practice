@@ -1,11 +1,45 @@
-    Queue<Character> queue = new LinkedList<>();
-        int res = 0;
-        for (char c : s.toCharArray()) {
-            while (queue.contains(c)) {
-                queue.poll();
-            }
-            queue.offer(c);
-            res = Math.max(res, queue.size());
+class Solution {
+    /*
+    Use a queue to hold my longest length
+    for every char, we check if the queue contains that char, if it doesnt we add it and check if q.size > max, if so max = q.size
+    ELSE if it is seen in the queue, we poll until its no longer in the queue
+    O(n) time 
+    */
+    public int lengthOfLongestSubstring(String s) {
+        if(s == null || s.isEmpty())
+            return 0;
+        int max = 0;
+        Set<Character> set= new HashSet<>(); 
+        //sliding window
+        //left pointer points to the start of our current substring
+        //right pointer is points to the next char
+        int left = 0, right = 0;
+        while(right < s.length()) {     
+            while(set.contains(s.charAt(right)))
+                set.remove(s.charAt(left++));  
+            
+            set.add(s.charAt(right++)); 
+            max = Math.max(max, right - left);
         }
-        return res;
+
+        return max;
+        
     }
+}
+
+/*
+n^2 time
+int max = 0;
+        Queue<Character> q = new LinkedList<>();
+        for(int i = 0; i < s.length(); i++){
+            //check if the queue contains this char, we poll its contents until it doesnt or until the stack is empty
+            if(q.contains(s.charAt(i))){         
+                while(!q.isEmpty() && q.contains(s.charAt(i))){
+                    q.poll();
+                }
+            }
+            q.offer(s.charAt(i));
+            max = Math.max(max, q.size());
+        }
+        return max;
+*/

@@ -1,0 +1,50 @@
+class Solution {
+    /*
+   Do a BFS at every point 0
+   mark each 0 as visited in another boolean array as TRUE
+   itterate on ever 0 point and then we do BFS and look for non 0 neighbors that are 1s and not visited 
+   on this non visited cells we do a few checks
+   check to see if its inbound and not visited before, if either conditions is true we continue
+   we now give this cell in teh matrix, the value of its neighbor where we came from + 1  as it has passed those conditions
+   then we add this node's neighbors into the queue 
+
+    */
+    
+    public int[][] updateMatrix(int[][] matrix) {
+        if(matrix == null || matrix.length == 0)
+            return matrix;
+        
+        int m = matrix.length, n = matrix[0].length;
+        boolean[][] visited = new boolean[m][n];
+        Queue<int[]> queue = new LinkedList<>();
+        
+        //iterate fiding all the 0s
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    queue.offer(new int[]{i, j});
+                    visited[i][j] = true;
+                }
+            }
+        }
+        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        
+        //We do bfs at every 0
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            for (int i = 0; i < 4; i++) {
+                int row = cur[0] + dir[i][0];
+                int col = cur[1] + dir[i][1];
+                if (row < 0 || row >= m || col < 0 || col >= n || visited[row][col]) {
+                    continue;
+                }
+                visited[row][col] = true;
+                //basically this nodes value is the value of where it came from +1 
+                matrix[row][col] = matrix[cur[0]][cur[1]] + 1;
+                queue.offer(new int[]{row, col});
+            }
+        }
+        return matrix;
+    }
+    
+}

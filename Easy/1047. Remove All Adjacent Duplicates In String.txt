@@ -1,0 +1,19 @@
+class Solution {
+    /*
+    Same thing as #2
+    use a char array as a stack
+    two pointers i which is the end of your string and j goes to every char i nteh array
+    if the char at res[i] == res[i-1], then you know how to make your left pointer back two to rewrite it
+    
+    */
+    public String removeDuplicates(String S) {
+        int i = 0, n = S.length();
+        char[] res = S.toCharArray();
+        for (int j = 0; j < n; ++j, ++i) {
+            res[i] = res[j];
+            if (i > 0 && res[i - 1] == res[i]) // count = 2
+                i -= 2;
+        }
+        return new String(res, 0, i); 
+    }
+}

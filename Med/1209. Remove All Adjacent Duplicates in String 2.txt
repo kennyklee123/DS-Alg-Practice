@@ -1,0 +1,33 @@
+class Solution {
+    /*
+    Alg
+    USe two pointers
+    i points to the end of our return string
+    j is used to go through the whole string
+    idea that we use a char[] array as a stack
+    count[] is to figure out the count
+    lets say if count[5] === k, then we know we have to move our pointer i left by k
+    using char array we use indexes to hold the contents of the our final string
+    
+    */
+    public String removeDuplicates(String s, int k) {
+        if(k <= 0 || s.isEmpty()){
+            return s;
+        } 
+        int i = 0, n = s.length(), count[] = new int[n];
+        
+        char[] stack = s.toCharArray();
+        
+        for (int j = 0; j < n; ++j, ++i) {
+            //we get the next character in the string
+            stack[i] = stack[j];
+            //if we have seen this character before and our last charcter is the same char, we increment count by 1, else we set it to 1
+            count[i] = i > 0 && stack[i - 1] == stack[j] ? count[i - 1] + 1 : 1;
+            //if the count of this char is ===k  we know to remove the last k chars in our result
+            //by decrementing i we remove the last k group from our string and our count
+            if (count[i] == k) i -= k;
+        }
+        //our result is the characters from the start to whereever our pointer ends ip to 
+        return new String(stack, 0, i);
+    }
+}

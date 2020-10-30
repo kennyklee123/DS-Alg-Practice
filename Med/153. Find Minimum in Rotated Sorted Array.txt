@@ -1,0 +1,30 @@
+class Solution {
+    public int findMin(int[] nums) {
+        if(nums.length ==0 || nums == null)
+            return 0;
+        if(nums.length == 1)
+            return nums[0];
+        
+        int left = 0;
+        int right = nums.length-1;
+        
+        while(left< right){
+            //find midlde avoid stack overflow
+            int mid = left + (right-left)/2;
+            // goal state check
+            //if nums[mid] < nums[mid-1], it is the smallest value
+            if(mid >0 && nums[mid] < nums[mid-1]){
+                return nums[mid];
+            }
+            //if mid is bigger than the value all the way to the right and bigger or equal to the left value, we know the smaller value is to the right
+            else if(nums[mid] > nums[right] && nums[mid] >= nums[left]){
+                left = mid+1;
+            }
+            //else we know the smaller value is to the left
+            else
+                right = mid-1;
+          
+        }
+        return nums[left];
+    }
+}

@@ -1,0 +1,57 @@
+class Solution {
+    
+    /*
+    Find the smalles element
+    the figure out what side target is at
+    then rune binary search obn that 1/2
+    */
+    public int search(int[] nums, int target) {
+        if (nums == null || nums.length == 0) return -1;
+        
+       int left = 0, right = nums.length-1;
+        int start = 0;
+        //1. find index of the smallest element
+        //Goal have elft and right meet at the index of the smallest element
+        //our loop will break when left is at the smallest index
+        while(left < right) {
+            //for integer overflow
+            int mid = left + (right-left)/2;
+            //this is the modified binary search part
+            
+            //if nums[mid] > nums[right] that means that the smallest will be seen to the right of mid
+            //in a normal sorted array, nums[mid] < last element in the array
+            if (nums[mid] > nums[right]) {
+                //make left = mid+1 since we know that the start of the smaller array portion is there
+                left = mid +1;
+            //this accounts for <=, which is normal in a sorted array, this means that our smallest element
+            //is to the left of mid
+            } else
+                right = mid;
+        }
+        
+        
+     //2. figure out in which side our target lies
+    //start holds our smallest value and we reset left to 0 and right to the end for the binary search
+        start = left;
+        left = 0;
+        right = nums.length-1;
+        //if target is less than the smallest index and is also less than the last element in the array
+        //we have a sorted array so just do normal Binary search
+        if (target >= nums[start] && target <= nums[right])
+            left = start;
+        //the target is on the other side of the array, so we set right to start which is the right border
+        else
+            right = start;
+        
+     //3. Run normal binary search in sorted half.
+        while(left <= right) {
+            int mid = left + (right - left)/2;
+            if (nums[mid] == target) return mid;
+            
+            if (nums[mid] > target) right = mid-1;
+            else left = mid + 1;
+        }
+        
+        return -1;
+    }
+}

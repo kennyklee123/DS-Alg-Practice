@@ -1,0 +1,77 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+    
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+    /*
+    Recursive Sol
+    we set a node's left child to point to the right child
+    we set a node's right childby checking if the next value of root  is null, if its not null, we set it to the left child of the next node, else this means
+    that its the most right node so we seyt it to null
+    .next goes to a node's next child, and we look at it from left to right
+    we do a preorder traversal
+    */
+    public Node connect(Node root) {  
+        if(root == null)
+            return root;    
+        if(root.left != null)
+            root.left.next = root.right;
+        
+        //the right node will either be null or be the left child of the root's right child
+        if(root.right != null)
+            root.right.next = root.next != null ? root.next.left : null;
+        
+        connect(root.left);
+        connect(root.right);
+        return root;
+    }
+}
+
+/*
+
+
+//IDEA BFS at every node we set the .next to the next node in the queue, if there are no nodes in the queue left it is set to null
+    //input is a node, edge cases is if the root is empty
+    //Time Complexity is O(N), Space is O(n) as we will process all nodes in the tree
+    //initalize variables here
+    Queue<Node> q = new LinkedList<>();
+    q.add(root);
+    //start bfs here
+    while(!q.isEmpty()){
+        int size = q.size();
+        //itterate through this level
+        for(int i = 0; i <size; i ++){
+            Node temp = q.poll();
+            if( i != size-1)
+                temp.next = q.peek();
+            else 
+                temp.right = null;
+            //add children to next node
+            if(temp.left != null)
+                q.offer(temp.left);
+            if(temp.right != null)
+                q.offer(temp.right);
+        }
+    }
+        
+        
+        */

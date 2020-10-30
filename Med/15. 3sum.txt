@@ -1,0 +1,96 @@
+class Solution {
+    
+    /*
+    Optimized out the ass
+    basically loop through the nums array and at every index we do a bi-parte two sum
+    this bi-parte two sum basically looks for the two values that add up to whatever 0 - nums[i] is pointing at , to make it a 3sum
+    in a sense we break 3 sum into two sum at every index in nums making it O(n^2)
+    
+    if nums[i] > 0 we can no longer find a 3 sum as everything to the right of i is larger, and since i is positive we will never find a negative
+    
+    
+    */
+   public List<List<Integer>> threeSum(int[] nums) {
+    List<List<Integer>> res = new ArrayList();
+    if(nums.length<3) return res;
+    Arrays.sort(nums);
+    for(int i = 0; i<nums.length-2; i++){
+        //if num[i] is > 0, you can never have a 3sum triplet since everything to the right of i is larger than i, and i is positive 
+        if(nums[i]>0)
+            break;
+        // we need these two i==0 and i > 0 statements to avoid out of bounds errors
+        //other part of the $$ is basically making sure we arent using duplicates as we want unique 3 sums
+        if(i==0||(i>0)&&(nums[i]!=nums[i-1]))
+        {
+            //lo is j , hi is k, sum holds the value we need to find to be a 3sum pair
+            int lo=i+1,hi=nums.length-1, sum=0-nums[i];
+            while(lo<hi){
+                //if we find a triplet we have too do a few things
+                //add the triplet into the result
+                //then we use two while loops to skip over any duplicate numbers we just used
+                //EX if its [-1, -1, 0, 1], after using the first -1, we would skip over the second
+                //the while loops break when the pointers next index is no longer a duplicate, so we just increment the pointers by 1 at the end to point to that non used number
+                if(nums[lo]+nums[hi]==sum){
+                    res.add(Arrays.asList(nums[i],nums[lo],nums[hi]));
+                    
+                    while(lo<hi&&nums[lo]==nums[lo+1]) lo++;
+                    while(lo<hi&&nums[hi]==nums[hi-1]) hi--;
+                    //we now know the next index for the pointers are values we have not used before
+                    lo++;
+                    hi--;
+                }
+                //else if sum < 0, we know to reduce our negative value at pointer j to increase our sum
+                else if(nums[lo]+nums[hi]<sum) lo++;
+                //else that mean that sum > 0, which means that we have to decrease our largest number which is at pointer k
+                else hi--;
+            }                    
+        }
+    }
+    return res;
+    }
+}
+
+
+/*
+
+slow af using set version
+ /*
+
+    We use a set to avoid duplicates  
+    ALG use a for loop to iterate up to array .length -2 since we are dealing with triplets
+    at every index we do a bi directional 2 sum sweep with pointers at i+1 and arr.length-1
+    if nums[i] + nums[j] + nums[k] == 0 we add that to our res
+    
+    
+
+    public List<List<Integer>> threeSum(int[] nums) {
+        
+        Set<List<Integer>> res  = new HashSet<>();
+        if(nums.length==0)
+            return new ArrayList<>(res);
+
+        sort it so we can do a left to right pass
+      
+        Arrays.sort(nums);
+        for(int i=0; i<nums.length-2;i++){
+            int j =i+1;
+           int  k = nums.length-1;
+            while(j<k){
+                //get the current some from this combination
+                int sum = nums[i]+nums[j]+nums[k];
+                //if the sum is 0 then add it to the set, teh add function of sum will only add if it is not contained in the set
+                if(sum==0)
+                    res.add(Arrays.asList(nums[i],nums[j++],nums[k--]));
+                //if the sun > 0 we need to reduce pointer k which is pointing at the largest # and that largest # is why we are ove rsum
+                else if( sum >0)
+                    k--;
+                // if sum < 0, we increment the left pointer by one, as we just need to increase it slightly
+                else if (sum<0)
+                    j++;
+            }
+
+        }
+        return new ArrayList<>(res);
+    }
+
+*/

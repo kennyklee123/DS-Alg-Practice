@@ -1,0 +1,27 @@
+class Solution {
+    /*
+    Array is not sorted, not contingious needed 
+    O(n) time O(1) space
+    */
+    public boolean increasingTriplet(int[] nums) {
+        if(nums == null || nums.length == 0 || nums.length < 3)
+            return false;
+        int numI = nums[0], numJ = Integer.MIN_VALUE;
+        for(int k = 1; k < nums.length; k++){
+            //if arr[i]> arr[k] this value is the new arr[i]
+            if(nums[k] < numI){
+                numI = nums[k];
+            }
+            //this means that arr[k] > then arr[i] but we have to check if arr[k] > arr[j]
+            else {
+                //if arr[j] isnt null and arr[k] is bigger we return true
+                if(numJ != Integer.MIN_VALUE && nums[k] > numJ)
+                    return true;
+                //else its either null or num2 is smaller
+                numJ = nums[k];
+            }
+        }
+        return false;
+    }
+}
+

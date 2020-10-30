@@ -1,0 +1,32 @@
+class Solution {
+    /*ALG
+        132 pattern
+        if we always keep 3 in the stack, and 2 is on top of the stack we use stack.peek
+        basically we have the 32 in 132 in the stack, we just have ot find the 1
+        so we just need to find an cell where the value is < nums[2], which is on top of the stack
+        basically the int second is too 
+    */
+    public boolean find132pattern(int[] nums) {
+        
+        if(nums.length == 0)
+            return false;
+        Stack<Integer> pattern = new Stack();
+        int second = Integer.MIN_VALUE;
+        for(int i = nums.length-1; i>= 0;i--){
+            if(nums[i] < second)
+                return true;
+            //now we have to try to find the pattern 32 again
+            //we itterate until the stack is empty making nums[i] = 3 and second = 2
+            //OR until theres a value in the stack which is larger than nums[i], which makes nums[i] 2, and whatever in the stack is 3
+            while(!pattern.isEmpty() && nums[i] > pattern.peek())
+                //we set second = stack.pop() too handle 2 cases
+                //it will either be the second largest value if the stack ends up empty meaning nums[i] is 3 and two = 2
+                    second = pattern.pop();
+            //in both cases we have to push nums[i] into the stack, making it either 3 or 2
+            pattern.push(nums[i]);
+            
+        }
+        return false;
+        
+    }
+}

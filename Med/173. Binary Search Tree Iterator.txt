@@ -1,0 +1,66 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+/*
+Idea it looks like an in order traversal which is left root right
+idea, we add all the left noodes first, when pop a node we then add its right child to the stack to make it in order
+to begin with minimum values first, we add all the left nodes, so we recursively bubble up the minimum values sinces its a BST
+
+
+*/
+class BSTIterator {
+
+    Stack<TreeNode> order;
+    public BSTIterator(TreeNode root) {
+        order = new Stack<TreeNode>(); 
+        //add the node and all the left children into the stack
+        add(root); 
+    }
+
+    /** @return whether we have a next smallest number */
+    //if our stack is empty we do not have a next
+    public boolean hasNext() {
+        return !order.isEmpty();
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+        //make sure out stack isnt empty, if it is return a -1
+        if(order.peek() != null){
+            TreeNode node = order.pop();
+            add(node.right);
+            return node.val;
+        }
+        return -1;
+        
+    }
+    
+    /** @add the current node and all its left child to the stack*/
+    private void add(TreeNode node) {
+        //so given this node we are abotu to add, we psuh it and all its left children into it
+        while (node != null) {
+            //push the node, then the next we want ot push is its left child
+            order.push(node);
+            node = node.left;
+        }
+    }
+}
+
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * BSTIterator obj = new BSTIterator(root);
+ * int param_1 = obj.next();
+ * boolean param_2 = obj.hasNext();
+ */
